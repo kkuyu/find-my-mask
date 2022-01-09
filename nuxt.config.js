@@ -6,39 +6,47 @@ export default {
   head: {
     title: 'find-my-mask',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ko',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: [{ src: '@/plugins/api.js' }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-  ],
+  buildModules: ['@nuxtjs/composition-api/module'],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-  ],
+  modules: ['@nuxtjs/axios', '@nuxtjs/proxy'],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
-}
+  build: {},
+
+  axios: {
+    proxy: true, // Can be also an object with default options
+  },
+
+  proxy: {
+    '/api/': {
+      target: process.env.API_URL,
+      pathRewrite: { '^/api/': '' },
+      logLevel: 'debug',
+      onProxyReq: (proxyReq, req, res) => {
+        proxyReq.path += (req._parsedOriginalUrl.search ? '&' : '?') + 'serviceKey=' + process.env.API_KEY;
+      },
+    },
+  },
+};
