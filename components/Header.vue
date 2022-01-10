@@ -7,13 +7,10 @@
           <NuxtLink to="/">index</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/32200">/drugCode</NuxtLink>
+          <NuxtLink to="/company/아미">/company/:id</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/32200/아미">/drugCode/company</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/32200/아미/코엔보황사마스크">/drugCode/company/product</NuxtLink>
+          <NuxtLink to="/product/코엔보황사마스크">/product/:id</NuxtLink>
         </li>
       </ul>
     </nav>
