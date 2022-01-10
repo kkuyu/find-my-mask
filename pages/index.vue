@@ -1,7 +1,7 @@
 <template>
   <div>
     <strong>index</strong>
-    <SearchForm @validSubmit="getMasks"></SearchForm>
+    <SearchForm :formData="formData" @validSubmit="getMasks"></SearchForm>
   </div>
 </template>
 
@@ -17,8 +17,15 @@ export default {
     SearchForm,
   },
   setup(props, context) {
-    const getMasks = async (formData) => {
-      const { category, drugCode, company, product } = formData;
+    const formData = ref({
+      category: 'company',
+      drugCode: '32100',
+      company: '',
+      product: '',
+    });
+
+    const getMasks = async () => {
+      const { category, drugCode, company, product } = formData.value;
       const params = {
         class_no: drugCode,
         entp_name: encodeURIComponent(company),
@@ -26,8 +33,6 @@ export default {
         pageNo: 1,
         numOfRows: 10,
       };
-
-      console.log(formData);
 
       const response = context.root.$api.mask.getMasks(params);
 
@@ -45,6 +50,7 @@ export default {
     };
 
     return {
+      formData,
       getMasks,
     };
   },
