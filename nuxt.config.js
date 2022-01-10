@@ -21,7 +21,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '@/plugins/api.js' }, { src: '@/plugins/validation.js' }],
+  plugins: [{ src: '@/plugins/api.js' }, { src: '@/plugins/validation.js' }, { src: '@/plugins/infinite.js' }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
