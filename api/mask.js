@@ -1,6 +1,10 @@
 export default (axios) => ({
-  getMasks(params) {
-    const url = 'api/getNonMdcinPrductPrmisnInfoList';
+  getList(params) {
+    const url = 'list/getMaskGradPrmsnStusListInq';
+    return axios.get(url, { params });
+  },
+  getDetail(params) {
+    const url = 'detail/getQdrgPrdtPrmsnInfoInq';
     return axios.get(url, { params });
   },
 });

@@ -40,12 +40,24 @@ export default {
   },
 
   proxy: {
-    '/api/': {
-      target: process.env.API_URL,
-      pathRewrite: { '^/api/': '' },
+    '/list/': {
+      target: process.env.API_LIST_URL,
+      pathRewrite: { '^/list/': '' },
       logLevel: 'debug',
       onProxyReq: (proxyReq, req, res) => {
-        proxyReq.path += (req._parsedOriginalUrl.search ? '&' : '?') + 'serviceKey=' + process.env.API_KEY;
+        proxyReq.path += req._parsedOriginalUrl.search ? '&' : '?';
+        proxyReq.path += 'serviceKey=' + encodeURIComponent(process.env.API_LIST_KEY);
+        proxyReq.path += '&type=json';
+      },
+    },
+    '/detail/': {
+      target: process.env.API_DETAIL_URL,
+      pathRewrite: { '^/detail/': '' },
+      logLevel: 'debug',
+      onProxyReq: (proxyReq, req, res) => {
+        proxyReq.path += req._parsedOriginalUrl.search ? '&' : '?';
+        proxyReq.path += 'serviceKey=' + encodeURIComponent(process.env.API_DETAIL_KEY);
+        proxyReq.path += '&type=json';
       },
     },
   },

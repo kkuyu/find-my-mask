@@ -15,22 +15,12 @@
       <label for="product">제품명</label>
       <input :value="formValue.product" type="text" id="product" required="required" @input="formStructure.product.onInput" />
     </ValidationProvider>
-    <ValidationProvider v-slot="{}" :rules="{ required: true }" tag="div">
-      <span>분류</span>
-      <template v-for="item in formStructure.drugCode.options">
-        <div :key="item.value">
-          <input type="radio" v-model="formValue.drugCode" :id="item.value" :value="item.value" required />
-          <label :for="item.value">{{ item.text }}</label>
-        </div>
-      </template>
-    </ValidationProvider>
     <button type="submit">검색</button>
   </ValidationObserver>
 </template>
 
 <script>
 import { computed, ref } from '@nuxtjs/composition-api';
-import convert from 'xml-js';
 
 export default {
   name: 'SearchForm',
@@ -40,7 +30,6 @@ export default {
       required: true,
       default: () => ({
         category: '',
-        drugCode: '',
         company: '',
         product: '',
       }),
@@ -79,25 +68,6 @@ export default {
             formValue.value.company = '';
           }
         },
-      },
-      drugCode: {
-        options: [
-          {
-            required: true,
-            value: '32100',
-            text: '수술용(덴탈)',
-          },
-          {
-            required: false,
-            value: '32200',
-            text: '보건용',
-          },
-          {
-            required: false,
-            value: '32300',
-            text: '비말차단용',
-          },
-        ],
       },
       company: {
         onInput: (event) => {

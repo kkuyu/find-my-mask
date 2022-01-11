@@ -6,12 +6,6 @@
         <li>
           <NuxtLink to="/">index</NuxtLink>
         </li>
-        <li>
-          <NuxtLink to="/company/아미">/company/:id</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/product/코엔보황사마스크">/product/:id</NuxtLink>
-        </li>
       </ul>
     </nav>
   </div>
