@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { ref } from '@nuxtjs/composition-api';
+import { ref, watch, computed, onMounted } from '@nuxtjs/composition-api';
 
 import SearchForm from '@/components/SearchForm';
 
@@ -25,31 +25,34 @@ export default {
     SearchForm,
   },
   setup(props, context) {
+    const $route = computed(() => context.root.$route);
+
     const formData = ref({
       category: 'company',
       company: '',
       product: '',
+      isLoading: false,
     });
 
-    const pageNum = ref(1);
     const resultData = ref({
       status: 'reset',
+      pageNo: 1,
       list: [],
     });
 
-    const getList = async (eventType, state) => {
+    const getListData = async (eventType, state) => {
       const params = {
         class_no: formData.value.drugCode,
         BSSH_NM: encodeURIComponent(formData.value.company),
         PRDLST_NM: encodeURIComponent(formData.value.product),
-        pageNo: pageNum.value,
+        pageNo: resultData.value.pageNo,
         numOfRows: 10,
       };
 
       context.root.$api.mask
         .getList(params)
         .then((response) => {
-          console.log(response.data.body);
+          formData.value.isLoading = false;
           if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
             resultData.value.status = 'update';
             resultData.value.list.push(...response.data.body.items);
@@ -61,27 +64,76 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          formData.value.isLoading = false;
           resultData.value.status = 'error';
           if (eventType === 'onScrolling') state.error();
         });
     };
 
     const onFormSubmit = () => {
-      pageNum.value = 1;
-      resultData.value.status = 'reset';
-      resultData.value.list = [];
-      getList('onFormSubmit');
+      if (formData.value.isLoading === true) return false;
+
+      context.root.$router.push({
+        path: '',
+        query: (() => {
+          if (formData.value.company) return { company: formData.value.company };
+          if (formData.value.product) return { product: formData.value.product };
+        })(),
+      });
     };
 
     const onScrolling = (state) => {
-      pageNum.value += 1;
-      getList('onScrolling', state);
+      if (formData.value.isLoading === true) return false;
+
+      formData.value.isLoading = true;
+      resultData.value.pageNo += 1;
+      getListData('onScrolling', state);
     };
+
+    watch(
+      () => [$route.value.query.company, $route.value.query.product],
+      () => {
+        if (!Object.keys($route.value.query).length) {
+          formData.value.category = 'company';
+          formData.value.company = '';
+          formData.value.product = '';
+
+          resultData.value.status = 'reset';
+          resultData.value.pageNo = 1;
+          resultData.value.list = [];
+          return;
+        }
+
+        formData.value.isLoading = true;
+        resultData.value.status = 'reset';
+        resultData.value.pageNo = 1;
+        resultData.value.list = [];
+        getListData('onChangeQuery');
+      }
+    );
+
+    onMounted(() => {
+      if (!Object.keys($route.value.query).length) return;
+
+      if ($route.value.query.company) {
+        formData.value.category = 'company';
+        formData.value.company = $route.value.query.company;
+      }
+      if ($route.value.query.product) {
+        formData.value.category = 'product';
+        formData.value.product = $route.value.query.product;
+      }
+
+      formData.value.isLoading = true;
+      resultData.value.status = 'reset';
+      resultData.value.pageNo = 1;
+      resultData.value.list = [];
+      getListData('onMounted');
+    });
 
     return {
       formData,
       resultData,
-      getList,
       onFormSubmit,
       onScrolling,
     };

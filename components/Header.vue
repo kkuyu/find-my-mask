@@ -4,7 +4,7 @@
     <nav>
       <ul>
         <li>
-          <NuxtLink to="/">index</NuxtLink>
+          <NuxtLink :to="{ path: '/', query: {} }">index</NuxtLink>
         </li>
       </ul>
     </nav>

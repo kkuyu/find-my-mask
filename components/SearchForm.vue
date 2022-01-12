@@ -15,7 +15,7 @@
       <label for="product">제품명</label>
       <input :value="formValue.product" type="text" id="product" required="required" @input="formStructure.product.onInput" />
     </ValidationProvider>
-    <button type="submit">검색</button>
+    <button type="submit" :disabled="formData.isLoading">검색</button>
   </ValidationObserver>
 </template>
 
