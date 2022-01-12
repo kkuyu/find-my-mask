@@ -50,13 +50,13 @@ export default {
         proxyReq.path += '&type=json';
       },
     },
-    '/detail/': {
-      target: process.env.API_DETAIL_URL,
-      pathRewrite: { '^/detail/': '' },
+    '/product/': {
+      target: process.env.API_PRODUCT_URL,
+      pathRewrite: { '^/product/': '' },
       logLevel: 'debug',
       onProxyReq: (proxyReq, req, res) => {
         proxyReq.path += req._parsedOriginalUrl.search ? '&' : '?';
-        proxyReq.path += 'serviceKey=' + encodeURIComponent(process.env.API_DETAIL_KEY);
+        proxyReq.path += 'serviceKey=' + encodeURIComponent(process.env.API_PRODUCT_KEY);
         proxyReq.path += '&type=json';
       },
     },

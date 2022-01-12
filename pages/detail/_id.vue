@@ -21,7 +21,7 @@ export default {
       detail: null,
     });
 
-    const getDetail = async (eventType, state) => {
+    const getProductData = async (eventType, state) => {
       const params = {
         item_name: encodeURIComponent(detailId.value),
         pageNo: 1,
@@ -31,7 +31,7 @@ export default {
       console.log(params);
 
       context.root.$api.mask
-        .getDetail(params)
+        .getProduct(params)
         .then((response) => {
           console.log(response.data.body);
           if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
@@ -56,14 +56,14 @@ export default {
       () => {
         resultData.value.status = 'reset';
         resultData.value.detail = null;
-        getDetail();
+        getProductData();
       }
     );
 
     onMounted(() => {
       resultData.value.status = 'reset';
       resultData.value.detail = null;
-      getDetail();
+      getProductData();
     });
 
     return {

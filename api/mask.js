@@ -3,8 +3,8 @@ export default (axios) => ({
     const url = 'list/getMaskGradPrmsnStusListInq';
     return axios.get(url, { params });
   },
-  getDetail(params) {
-    const url = 'detail/getQdrgPrdtPrmsnInfoInq';
+  getProduct(params) {
+    const url = 'product/getQdrgPrdtPrmsnInfoInq';
     return axios.get(url, { params });
   },
 });
