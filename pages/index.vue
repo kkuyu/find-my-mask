@@ -40,7 +40,15 @@ export default {
       list: [],
     });
 
+    const resetResultData = () => {
+      resultData.value.status = 'reset';
+      resultData.value.pageNo = 1;
+      resultData.value.list = [];
+    };
+
     const getListData = async (eventType, state) => {
+      formData.value.isLoading = true;
+
       const params = {
         class_no: formData.value.drugCode,
         BSSH_NM: encodeURIComponent(formData.value.company),
@@ -85,7 +93,6 @@ export default {
     const onScrolling = (state) => {
       if (formData.value.isLoading === true) return false;
 
-      formData.value.isLoading = true;
       resultData.value.pageNo += 1;
       getListData('onScrolling', state);
     };
@@ -101,14 +108,10 @@ export default {
           resultData.value.status = 'reset';
           resultData.value.pageNo = 1;
           resultData.value.list = [];
-          return;
-        }
-
-        formData.value.isLoading = true;
-        resultData.value.status = 'reset';
-        resultData.value.pageNo = 1;
-        resultData.value.list = [];
+        } else {
+        resetResultData();
         getListData('onChangeQuery');
+        }
       }
     );
 
@@ -124,10 +127,7 @@ export default {
         formData.value.product = $route.value.query.product;
       }
 
-      formData.value.isLoading = true;
-      resultData.value.status = 'reset';
-      resultData.value.pageNo = 1;
-      resultData.value.list = [];
+      resetResultData();
       getListData('onMounted');
     });
 
