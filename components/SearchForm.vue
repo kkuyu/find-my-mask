@@ -1,19 +1,17 @@
 <template>
   <ValidationObserver ref="observer" v-slot="{}" tag="form" novalidate @submit.prevent="onSubmit">
     <ValidationProvider v-slot="{}" :rules="{ required: true }" tag="div">
-      <select name="" id="" :value="formValue.category" @change="formStructure.category.onChange" required="required">
-        <template v-for="item in formStructure.category.options">
-          <option :value="item.value" :key="item.value">{{ item.text }}</option>
-        </template>
-      </select>
+      <span>분류</span>
+      <template v-for="item in formStructure.category.options">
+        <div :key="item.value">
+          <input type="radio" v-model="formValue.category" :id="item.value" :value="item.value" required />
+          <label :for="item.value">{{ item.text }}</label>
+        </div>
+      </template>
     </ValidationProvider>
-    <ValidationProvider v-if="formValue.category === 'company'" v-slot="{}" :rules="{ required: true, max: 3000 }" tag="div">
-      <label for="company">업체명</label>
-      <input :value="formValue.company" type="text" id="company" required="required" @input="formStructure.company.onInput" />
-    </ValidationProvider>
-    <ValidationProvider v-if="formValue.category === 'product'" v-slot="{}" :rules="{ required: true, max: 200 }" tag="div">
-      <label for="product">제품명</label>
-      <input :value="formValue.product" type="text" id="product" required="required" @input="formStructure.product.onInput" />
+    <ValidationProvider v-slot="{}" :rules="{ required: true, max: 3000 }" tag="div">
+      <label for="keyword">검색어</label>
+      <input :value="formValue.keyword" type="text" id="keyword" required="required" @input="formStructure.keyword.onInput" />
     </ValidationProvider>
     <button type="submit" :disabled="formData.isLoading">검색</button>
   </ValidationObserver>
@@ -30,8 +28,7 @@ export default {
       required: true,
       default: () => ({
         category: '',
-        company: '',
-        product: '',
+        keyword: '',
       }),
     },
   },
@@ -59,24 +56,10 @@ export default {
             text: '제품명',
           },
         ],
-        onChange: (event) => {
-          formValue.value.category = event.target.value;
-          if (formValue.value.category === 'company') {
-            formValue.value.product = '';
-          }
-          if (formValue.value.category === 'product') {
-            formValue.value.company = '';
-          }
-        },
       },
-      company: {
+      keyword: {
         onInput: (event) => {
-          formValue.value.company = event.target.value;
-        },
-      },
-      product: {
-        onInput: (event) => {
-          formValue.value.product = event.target.value;
+          formValue.value.keyword = event.target.value;
         },
       },
     });

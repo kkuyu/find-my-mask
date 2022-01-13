@@ -5,7 +5,9 @@
     <ul v-if="resultData.list.length">
       <template v-for="(item, index) in resultData.list">
         <li :key="index">
-          <NuxtLink :to="`/detail/${item.PRDLST_NM}`"> {{ item }}</NuxtLink>
+          <NuxtLink :to="`/detail/${item.PRDLST_NM}`">
+            {{ item }}
+          </NuxtLink>
         </li>
       </template>
     </ul>
@@ -29,8 +31,7 @@ export default {
 
     const formData = ref({
       category: 'company',
-      company: '',
-      product: '',
+      keyword: '',
       isLoading: false,
     });
 
@@ -39,6 +40,17 @@ export default {
       pageNo: 1,
       list: [],
     });
+
+    const updateFormData = () => {
+      formData.value.category = $route.value.query.company ? 'company' : 'product';
+      formData.value.keyword = $route.value.query[formData.value.category];
+    };
+
+    const resetFormData = () => {
+      formData.value.category = 'company';
+      formData.value.keyword = '';
+      formData.value.isLoading = false;
+    };
 
     const resetResultData = () => {
       resultData.value.status = 'reset';
@@ -51,8 +63,8 @@ export default {
 
       const params = {
         class_no: formData.value.drugCode,
-        BSSH_NM: encodeURIComponent(formData.value.company),
-        PRDLST_NM: encodeURIComponent(formData.value.product),
+        BSSH_NM: encodeURIComponent(formData.value.category === 'company' ? formData.value.keyword : ''),
+        PRDLST_NM: encodeURIComponent(formData.value.category === 'product' ? formData.value.keyword : ''),
         pageNo: resultData.value.pageNo,
         numOfRows: 10,
       };
@@ -83,10 +95,9 @@ export default {
 
       context.root.$router.push({
         path: '',
-        query: (() => {
-          if (formData.value.company) return { company: formData.value.company };
-          if (formData.value.product) return { product: formData.value.product };
-        })(),
+        query: {
+          [formData.value.category]: formData.value.keyword,
+        },
       });
     };
 
@@ -101,34 +112,25 @@ export default {
       () => [$route.value.query.company, $route.value.query.product],
       () => {
         if (!Object.keys($route.value.query).length) {
-          formData.value.category = 'company';
-          formData.value.company = '';
-          formData.value.product = '';
-
-          resultData.value.status = 'reset';
-          resultData.value.pageNo = 1;
-          resultData.value.list = [];
+          resetFormData();
+          resetResultData();
         } else {
-        resetResultData();
-        getListData('onChangeQuery');
+          updateFormData();
+          resetResultData();
+          getListData('onChangeQuery');
         }
       }
     );
 
     onMounted(() => {
-      if (!Object.keys($route.value.query).length) return;
-
-      if ($route.value.query.company) {
-        formData.value.category = 'company';
-        formData.value.company = $route.value.query.company;
+      if (!Object.keys($route.value.query).length) {
+        resetFormData();
+        resetResultData();
+      } else {
+        updateFormData();
+        resetResultData();
+        getListData('onMounted');
       }
-      if ($route.value.query.product) {
-        formData.value.category = 'product';
-        formData.value.product = $route.value.query.product;
-      }
-
-      resetResultData();
-      getListData('onMounted');
     });
 
     return {
