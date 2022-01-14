@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ref, watch, computed, onMounted } from '@nuxtjs/composition-api';
+import { ref, watch, computed, onMounted, useStore } from '@nuxtjs/composition-api';
 
 import SearchForm from '@/components/SearchForm';
 
@@ -27,6 +27,7 @@ export default {
     SearchForm,
   },
   setup(props, context) {
+    const store = useStore();
     const $route = computed(() => context.root.$route);
 
     const formData = ref({
@@ -118,6 +119,9 @@ export default {
           updateFormData();
           resetResultData();
           getListData('onChangeQuery');
+          store.commit('search/addKeyword', {
+            text: formData.value.keyword,
+          });
         }
       }
     );
@@ -130,6 +134,9 @@ export default {
         updateFormData();
         resetResultData();
         getListData('onMounted');
+        store.commit('search/addKeyword', {
+          text: formData.value.keyword,
+        });
       }
     });
 
