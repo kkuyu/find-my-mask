@@ -1,18 +1,7 @@
 <template>
   <div>
-    <strong>index</strong>
     <SearchForm :formData="formData" @validSubmit="onFormSubmit"></SearchForm>
-    <ul v-if="resultData.list.length">
-      <template v-for="(item, index) in resultData.list">
-        <li :key="index">
-          <NuxtLink :to="`/detail/${item.PRDLST_NM}`">
-            {{ item }}
-          </NuxtLink>
-        </li>
-      </template>
-    </ul>
-    <div v-else-if="resultData.status === 'complete'">조회 결과가 없습니다.</div>
-    <InfiniteLoading v-if="resultData.list.length" @infinite="onScrolling"></InfiniteLoading>
+    <SearchResult :resultData="resultData" @onScrolling="onScrolling"></SearchResult>
   </div>
 </template>
 
@@ -20,11 +9,13 @@
 import { ref, watch, computed, onMounted, useStore } from '@nuxtjs/composition-api';
 
 import SearchForm from '@/components/SearchForm';
+import SearchResult from '@/components/SearchResult';
 
 export default {
   name: 'Index',
   components: {
     SearchForm,
+    SearchResult,
   },
   setup(props, context) {
     const store = useStore();
