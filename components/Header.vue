@@ -1,12 +1,7 @@
 <template>
   <div>
-    <strong>Header</strong>
     <nav>
-      <ul>
-        <li>
-          <NuxtLink :to="{ path: '/', query: {} }">index</NuxtLink>
-        </li>
-      </ul>
+      <NuxtLink :to="{ path: '/', query: {} }"><font-awesome-icon :icon="['fab', 'slack-hash']" />Find My Mask</NuxtLink>
     </nav>
   </div>
 </template>

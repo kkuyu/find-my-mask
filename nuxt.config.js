@@ -1,3 +1,5 @@
+import * as FontAwesome from './icon/fontawesome';
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -27,7 +29,15 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/composition-api/module'],
+  buildModules: ['@nuxtjs/composition-api/module', ['@nuxtjs/fontawesome', { component: 'fontAwesome', suffix: true }]],
+
+  fontawesome: {
+    icons: {
+      solid: FontAwesome.solid,
+      regular: FontAwesome.regular,
+      brands: FontAwesome.brands,
+    },
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/axios', '@nuxtjs/proxy'],
