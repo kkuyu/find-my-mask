@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { useStore } from '@nuxtjs/composition-api';
+
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 
@@ -15,6 +17,15 @@ export default {
   components: {
     Header,
     Footer,
+  },
+  setup(props, context) {
+    const store = useStore();
+
+    store.commit('search/initStore');
+
+    store.subscribe((mutation, state) => {
+      localStorage.setItem('storeSearch', JSON.stringify(state.search));
+    });
   },
 };
 </script>
