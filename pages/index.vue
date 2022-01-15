@@ -121,6 +121,7 @@ export default {
           getListData('onChangeQuery');
           store.commit('search/addKeyword', {
             text: formData.value.keyword,
+            category: formData.value.category,
           });
         }
       }
@@ -136,6 +137,7 @@ export default {
         getListData('onMounted');
         store.commit('search/addKeyword', {
           text: formData.value.keyword,
+          category: formData.value.category,
         });
       }
     });

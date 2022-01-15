@@ -30,28 +30,16 @@ import { ref, computed, useStore } from '@nuxtjs/composition-api';
 
 export default {
   name: 'SearchKeyword',
-  props: {
-    formData: {
-      type: Object,
-      required: true,
-      default: () => ({
-        category: '',
-        keyword: '',
-      }),
-    },
-  },
   setup(props, context) {
     const store = useStore();
     const $route = computed(() => context.root.$route);
     const $router = context.root.$router;
 
     const keywordClick = ($event, keyword) => {
-      if ($route.value.query[props.formData.category] === keyword.text) return false;
-
       $router.push({
         path: '/',
         query: {
-          [props.formData.category]: keyword.text,
+          [keyword.category]: keyword.text,
         },
       });
     };
