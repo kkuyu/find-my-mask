@@ -1,17 +1,32 @@
 <template>
   <div>
-    <strong>detail</strong>
-    <p>detailId: {{ detailId }}</p>
-    <p>status: {{ resultData.status }}</p>
-    <div>{{ resultData.detail }}</div>
+    <h2>{{ detailId }}</h2>
+    <template v-if="resultData.status === 'reset'">
+      <p>제품 정보를 불러오고있습니다.</p>
+    </template>
+    <template v-if="resultData.status === 'empty'">
+      <p>제품 정보를 불러올 수 없습니다.</p>
+    </template>
+    <template v-if="resultData.status === 'error'">
+      <p>오류가 발생했습니다. 다시 시도해주세요.</p>
+    </template>
+    <template v-if="resultData.status === 'update'">
+      <DetailSection v-for="(item, key) in resultData.detail" :key="key" :title="key" :content="item || ''"> </DetailSection>
+    </template>
   </div>
 </template>
 
 <script>
+import convert from 'xml-jS';
 import { ref, watch, computed, useRoute, onMounted } from '@nuxtjs/composition-api';
+
+import DetailSection from '@/components/DetailSection';
 
 export default {
   name: 'Detail',
+  components: {
+    DetailSection,
+  },
   setup(props, context) {
     const route = useRoute();
 
@@ -20,6 +35,16 @@ export default {
       status: 'reset',
       detail: null,
     });
+
+    const convertData = (object) => {
+      const result = { ...object };
+      for (const key in result) {
+        if (Object.hasOwnProperty.call(result, key) && key.indexOf('_DOC_') !== -1) {
+          result[key] = JSON.parse(convert.xml2json(result[key], { compact: true, spaces: 4 }));
+        }
+      }
+      return result;
+    };
 
     const getProductData = async (eventType, state) => {
       const params = {
@@ -37,7 +62,7 @@ export default {
           if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
             if (detailId.value === response.data.body.items[0].ITEM_NAME) {
               resultData.value.status = 'update';
-              resultData.value.detail = response.data.body.items[0];
+              resultData.value.detail = convertData(response.data.body.items[0]);
             } else {
               resultData.value.status = 'empty';
             }

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <nav>
+    <h1>
       <NuxtLink :to="{ path: '/', query: {} }"><font-awesome-icon :icon="['fab', 'slack-hash']" />Find My Mask</NuxtLink>
-    </nav>
+    </h1>
   </div>
 </template>
 

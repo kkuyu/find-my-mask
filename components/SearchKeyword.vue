@@ -6,7 +6,7 @@
     <div v-if="$store.state.search.isSaveMode === false">검색어 저장 기능이 꺼져있습니다.</div>
     <ul v-else-if="$store.state.search.recentlyKeyword.length">
       <template v-for="keyword in $store.state.search.recentlyKeyword">
-        <li :key="keyword.text">
+        <li :key="`${keyword.category}-${keyword.text}`">
           <button type="button" @click="keywordClick($event, keyword)">
             {{ keyword }}
           </button>
