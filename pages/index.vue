@@ -1,7 +1,11 @@
 <template>
   <div>
     <SearchForm :formData="formData" @validSubmit="onFormSubmit"></SearchForm>
-    <SearchResult :resultData="resultData" @onScrolling="onScrolling"></SearchResult>
+    <SearchResult :resultData="resultData" @onScrolling="onScrolling">
+      <template v-for="item in resultData.list" v-slot:[`resultListItem${item.PRDLST_SN}`]="{ data }">
+        <SearchResultItem :key="item.PRDLST_SN" :data="data" />
+      </template>
+    </SearchResult>
   </div>
 </template>
 

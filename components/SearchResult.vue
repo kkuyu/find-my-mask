@@ -1,11 +1,9 @@
 <template>
   <div>
     <ul v-if="resultData.list.length">
-      <template v-for="(item, index) in resultData.list">
-        <li :key="index">
-          <NuxtLink :to="`/detail/${item.PRDLST_NM}`">
-            {{ item }}
-          </NuxtLink>
+      <template v-for="item in resultData.list">
+        <li :key="item.PRDLST_SN">
+          <slot :name="`resultListItem${item.PRDLST_SN}`" :data="{ product: item.PRDLST_NM, company: item.BSSH_NM, grade: item.GRADE, class: item.CLSF_NO_NM }" />
         </li>
       </template>
     </ul>
