@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;600&display=swap');
+
+:root {
+  --color-white: #fff;
+  --color-black: #222;
+  --color-gray: #666;
+  --color-bg: #f3f3f3;
+  --color-primary: #5873de;
+  --color-secondary: #c3cdf3;
+}
+
+body {
+  font-family: 'Hahmlet', serif;
+  margin: 0 auto;
+  min-width: 360px;
+  max-width: 720px;
+  padding: 0 1rem;
+  font-weight: 300;
+  line-height: 1.4;
+  color: #222;
+  background-color: var(--color-bg);
+  box-sizing: border-box;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+strong {
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+}
+
+em {
+  font-style: normal;
+}
+
+a {
+  color: #222;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  padding: 0;
+  color: #222;
+  background: transparent;
+  border: none;
+}
+
+input {
+  background: transparent;
+}
+
+.hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

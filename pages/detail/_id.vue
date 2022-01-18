@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <h2>{{ detailId }}</h2>
-    <template v-if="resultData.status === 'reset'">
-      <p>제품 정보를 불러오고있습니다.</p>
-    </template>
-    <template v-if="resultData.status === 'empty'">
-      <p>제품 정보를 불러올 수 없습니다.</p>
-    </template>
-    <template v-if="resultData.status === 'error'">
-      <p>오류가 발생했습니다. 다시 시도해주세요.</p>
-    </template>
-    <template v-if="resultData.status === 'update'">
-      <DetailSection v-for="(item, key) in resultData.detail" :key="key" :title="key" :content="item || ''"> </DetailSection>
-    </template>
-  </div>
+  <article>
+    <h1 class="detail-title">{{ detailId }}</h1>
+    <div class="detail-content">
+      <template v-if="resultData.status === 'reset'">
+        <p>제품 정보를 불러오고있습니다.</p>
+      </template>
+      <template v-if="resultData.status === 'empty'">
+        <p>제품 정보를 불러올 수 없습니다.</p>
+      </template>
+      <template v-if="resultData.status === 'error'">
+        <p>오류가 발생했습니다. 나중에 다시 시도해주세요.</p>
+      </template>
+      <template v-if="resultData.status === 'update'">
+        <DetailSection v-for="(item, key) in resultData.detail" :key="key" :title="key" :content="item || ''"> </DetailSection>
+      </template>
+    </div>
+  </article>
 </template>
 
 <script>
@@ -53,12 +55,9 @@ export default {
         numOfRows: 1,
       };
 
-      console.log(params);
-
       context.root.$api.mask
         .getProduct(params)
         .then((response) => {
-          console.log(response.data.body);
           if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
             if (detailId.value === response.data.body.items[0].ITEM_NAME) {
               resultData.value.status = 'update';
@@ -98,3 +97,30 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.detail-title {
+  font-size: 2rem;
+}
+
+.detail-content {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1rem;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  ::v-deep .detail-section {
+    &:not(:first-child) {
+      margin-top: 1.25rem;
+    }
+    .title {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 18px;
+    }
+    .fa-hashtag {
+      margin-right: 4px;
+      color: #5873de;
+    }
+  }
+}
+</style>

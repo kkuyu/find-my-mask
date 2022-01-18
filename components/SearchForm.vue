@@ -1,37 +1,34 @@
 <template>
-  <ValidationObserver ref="observer" v-slot="{}" tag="form" novalidate @submit.prevent="onSubmit">
-    <ValidationProvider v-slot="{}" :rules="{ required: true }" tag="div">
-      <span>분류</span>
-      <template v-for="item in formStructure.category.options">
-        <div :key="item.value">
-          <input type="radio" v-model="formValue.category" :id="item.value" :value="item.value" required />
-          <label :for="item.value">{{ item.text }}</label>
+  <ValidationObserver ref="observer" v-slot="{}" tag="form" class="form-observer" novalidate @submit.prevent="onSubmit">
+    <ValidationProvider v-slot="{}" :rules="{ required: true }" tag="div" class="form-provider">
+      <span class="hidden">분류</span>
+      <div class="radio-tab">
+        <div class="radio-tab-inner">
+          <template v-for="item in formStructure.category.options">
+            <input :key="`input-${item.value}`" type="radio" class="hidden" v-model="formValue.category" :id="item.value" :value="item.value" required />
+            <label :key="`label-${item.value}`" :for="item.value">{{ item.text }}</label>
+          </template>
+          <span class="hint" />
         </div>
-      </template>
-    </ValidationProvider>
-    <ValidationProvider v-slot="{ failedRules, invalid }" :rules="{ required: true, min: 2, max: 3000 }" tag="div">
-      <label for="keyword">검색어</label>
-      <div ref="keywordInput">
-        <input
-          :value="formValue.keyword"
-          type="text"
-          id="keyword"
-          required="required"
-          autocomplete="off"
-          @input="formStructure.keyword.onInput"
-          :aria-invalid="invalid"
-          aria-describedby="keyword-feedback"
-        />
-        <button v-if="formValue.keyword.length" @click="keywordReset">리셋</button>
       </div>
-      <div v-show="invalid" id="keyword-feedback">
-        <span v-if="failedRules.required || failedRules.min">2글자 이상 입력해주세요.</span>
-        <span v-else-if="failedRules.max">3000자 이하 입력해주세요</span>
-      </div>
-      <SearchKeyword v-show="showKeywordList" ref="keywordList" />
     </ValidationProvider>
-    <button type="submit" :disabled="formData.isLoading">검색</button>
-    <slot name="recentlyKeyword" />
+    <ValidationProvider v-slot="{}" :rules="{ required: true }" tag="div" class="form-provider">
+      <label for="keyword" class="hidden">검색어</label>
+      <div class="input-form">
+        <div ref="keywordInput">
+          <input :value="formValue.keyword" type="text" id="keyword" required="required" maxlength="3000" autocomplete="off" @input="formStructure.keyword.onInput" />
+          <button v-if="formValue.keyword.length" type="button" class="btn-reset" @click="keywordReset">
+            <font-awesome-icon :icon="['fas', 'times-circle']" />
+            <span class="hidden">리셋</span>
+          </button>
+        </div>
+        <SearchKeyword ref="keywordList" :class="{ show: showKeywordList }"> </SearchKeyword>
+        <button type="submit" class="btn-submit" :disabled="formData.isLoading">
+          <font-awesome-icon :icon="['fas', 'search']" />
+          <span class="hidden">검색</span>
+        </button>
+      </div>
+    </ValidationProvider>
   </ValidationObserver>
 </template>
 
@@ -214,3 +211,86 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.form-observer {
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+}
+.form-provider {
+  position: relative;
+  & + & {
+    border-top: 0.125rem solid var(--color-bg);
+  }
+}
+
+.radio-tab {
+  display: block;
+  padding: 0.5rem 0;
+  text-align: center;
+  &-inner {
+    position: relative;
+    display: inline-flex;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10rem;
+    height: 2.25rem;
+    font-size: 1rem;
+    color: var(--color-black);
+    transition: font-weight 0.15s ease-in;
+    cursor: pointer;
+    z-index: 2;
+  }
+  input[type='radio'] {
+    &:checked + label {
+      font-weight: 600;
+    }
+    &[id='company']:checked ~ .hint {
+      transform: translateX(-100%);
+    }
+    &[id='product']:checked ~ .hint {
+      transform: translateX(0%);
+    }
+  }
+  .hint {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 50%;
+    background-color: var(--color-secondary);
+    border-radius: 0.5rem;
+    transition: transform 0.25s ease-out;
+    z-index: 1;
+  }
+}
+
+.input-form {
+  input[type='text'] {
+    width: 100%;
+    padding: 1.25rem 3.75rem;
+    font-size: 1.25rem;
+    border: none;
+    box-sizing: border-box;
+  }
+  .btn-submit {
+    position: absolute;
+    top: 0.625rem;
+    left: 0.75rem;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--color-secondary);
+  }
+  .btn-reset {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.75rem;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--color-secondary);
+  }
+}
+</style>

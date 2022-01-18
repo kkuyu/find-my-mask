@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>{{ error }}</div>
-    <NuxtLink :to="{ path: '/' }">Go Home</NuxtLink>
+    <NuxtLink :to="{ path: '/', query: null }">Go Home</NuxtLink>
   </div>
 </template>
 

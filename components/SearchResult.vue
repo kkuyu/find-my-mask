@@ -1,14 +1,15 @@
 <template>
-  <div>
-    <ul v-if="resultData.list.length">
+  <div class="result-wrap">
+    <ul v-if="resultData.list.length" class="result-list">
       <template v-for="item in resultData.list">
         <li :key="item.PRDLST_SN">
-          <slot :name="`resultListItem${item.PRDLST_SN}`" :data="{ product: item.PRDLST_NM, company: item.BSSH_NM, grade: item.GRADE, class: item.CLSF_NO_NM }" />
+          <slot :name="`resultListCard${item.PRDLST_SN}`" :data="{ product: item.PRDLST_NM, company: item.BSSH_NM, grade: item.GRADE, class: item.CLSF_NO_NM }" />
         </li>
       </template>
     </ul>
-    <div v-else-if="resultData.status === 'complete'">조회 결과가 없습니다.</div>
-    <InfiniteLoading v-if="resultData.list.length" @infinite="onScrolling"></InfiniteLoading>
+    <div v-if="resultData.status === 'complete' && !resultData.list.length" class="result-empty">
+      <span>조회 결과가 없습니다.</span>
+    </div>
   </div>
 </template>
 
@@ -26,16 +27,22 @@ export default {
       }),
     },
   },
-  setup(props, context) {
-    const onScrolling = (state) => {
-      context.emit('onScrolling', state);
-    };
-
-    return {
-      onScrolling,
-    };
-  },
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.result-wrap {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.result-list {
+  li + li {
+    margin-top: 1rem;
+  }
+}
+
+.result-empty {
+  text-align: center;
+}
+</style>

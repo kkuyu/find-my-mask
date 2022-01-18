@@ -1,11 +1,23 @@
 <template>
   <div>
+    <!-- form -->
     <SearchForm :formData="formData" @validSubmit="onFormSubmit"></SearchForm>
-    <SearchResult :resultData="resultData" @onScrolling="onScrolling">
-      <template v-for="item in resultData.list" v-slot:[`resultListItem${item.PRDLST_SN}`]="{ data }">
-        <SearchResultItem :key="item.PRDLST_SN" :data="data" />
+    <!-- result -->
+    <SearchResult :resultData="resultData">
+      <template v-for="item in resultData.list" v-slot:[`resultListCard${item.PRDLST_SN}`]="{ data }">
+        <SearchResultCard :key="item.PRDLST_SN" :data="data" />
       </template>
     </SearchResult>
+    <!-- initial loading -->
+    <SearchResultCard v-if="formData.isLoading && !resultData.list.length" :isLoading="true" />
+    <!-- infinite loading -->
+    <InfiniteLoading v-if="resultData.list.length" @infinite="onScrolling">
+      <div slot="spinner">
+        <SearchResultCard :isLoading="true" />
+      </div>
+      <div slot="no-more">마지막 데이터입니다.</div>
+      <div slot="no-results">마지막 데이터입니다.</div>
+    </InfiniteLoading>
   </div>
 </template>
 
@@ -14,12 +26,14 @@ import { ref, watch, computed, onMounted, useStore } from '@nuxtjs/composition-a
 
 import SearchForm from '@/components/SearchForm';
 import SearchResult from '@/components/SearchResult';
+import SearchResultCard from '@/components/SearchResultCard';
 
 export default {
   name: 'Index',
   components: {
     SearchForm,
     SearchResult,
+    SearchResultCard,
   },
   setup(props, context) {
     const store = useStore();
