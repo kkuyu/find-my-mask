@@ -6,7 +6,7 @@ const getIndex = (state, payload) => {
 
 export default {
   initStore(state) {
-    if (localStorage.getItem('storeSearch')) {
+    if (typeof window !== 'undefined' && localStorage.getItem('storeSearch')) {
       this.replaceState({
         search: Object.assign(state, JSON.parse(localStorage.getItem('storeSearch'))),
       });

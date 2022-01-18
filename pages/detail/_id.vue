@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import convert from 'xml-jS';
+import convert from 'xml-js';
 import { ref, watch, computed, useRoute, onMounted } from '@nuxtjs/composition-api';
 
 import DetailSection from '@/components/DetailSection';

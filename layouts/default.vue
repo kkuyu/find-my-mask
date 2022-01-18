@@ -24,7 +24,7 @@ export default {
     store.commit('search/initStore');
 
     store.subscribe((mutation, state) => {
-      localStorage.setItem('storeSearch', JSON.stringify(state.search));
+      typeof window !== 'undefined' && localStorage.setItem('storeSearch', JSON.stringify(state.search));
     });
   },
 };
