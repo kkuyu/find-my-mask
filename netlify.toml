@@ -1,0 +1,11 @@
+[[redirects]]
+  from = "/list/*"
+  to = "http://apis.data.go.kr/1471000/MaskGradPrmsnStusListService/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/product/*"
+  to = "http://apis.data.go.kr/1471000/QdrgPrdtPrmsnInfoService/:splat"
+  status = 200
+  force = true

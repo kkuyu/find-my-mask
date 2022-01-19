@@ -1,30 +1,34 @@
 <template>
   <div class="keyword-wrap">
     <div class="keyword-body">
-      <div v-if="$store.state.search.isSaveMode === false" class="keyword-off">검색어 저장 기능이 꺼져있습니다.</div>
-      <ul v-else-if="$store.state.search.recentlyKeyword.length" class="keyword-list">
-        <template v-for="keyword in $store.state.search.recentlyKeyword.slice().reverse()">
-          <li :key="`${keyword.category}-${keyword.text}`">
-            <button type="button" class="btn-item" @click="keywordClick($event, keyword)">
-              <span class="badge">{{ keyword.category === 'company' ? '업체명' : '제품명' }}</span>
-              <span class="text">{{ keyword.text }}</span>
-            </button>
-            <button type="button" class="btn-remove" @click="keywordRemove($event, keyword)">
-              <font-awesome-icon :icon="['fas', 'times']" />
-              <span class="hidden">삭제</span>
-            </button>
-          </li>
-        </template>
-      </ul>
-      <div v-else class="keyword-empty">최근 검색어 내역이 없습니다.</div>
+      <template v-if="$store.state.search.isSaveMode === true">
+        <ul v-show="$store.getters['search/recentlyKeywordReverse'].length" class="keyword-list">
+          <template v-for="keyword in $store.getters['search/recentlyKeywordReverse']">
+            <li :key="`${keyword.category}-${keyword.text}`">
+              <button type="button" class="btn-item" @click="keywordClick($event, keyword)">
+                <span class="badge">{{ keyword.category === 'company' ? '업체명' : '제품명' }}</span>
+                <span class="text">{{ keyword.text }}</span>
+              </button>
+              <button type="button" class="btn-remove" @click="keywordRemove($event, keyword)">
+                <font-awesome-icon :icon="['fas', 'times']" />
+                <span class="hidden">삭제</span>
+              </button>
+            </li>
+          </template>
+        </ul>
+        <div v-show="!$store.getters['search/recentlyKeywordReverse'].length" class="keyword-empty">최근 검색어 내역이 없습니다.</div>
+      </template>
+      <div v-else class="keyword-off">검색어 저장 기능이 꺼져있습니다.</div>
     </div>
     <div class="keyword-footer">
       <button type="button" class="btn-toggle" @click="toggleSaveMode">
         <span>자동저장 {{ $store.state.search.isSaveMode === true ? '끄기' : '켜기' }}</span>
       </button>
-      <button v-if="$store.state.search.isSaveMode && $store.state.search.recentlyKeyword.length" type="button" class="btn-remove-all" @click="keywordRemoveAll($event)">
-        <span>전체삭제</span>
-      </button>
+      <template v-if="$store.state.search.isSaveMode === true">
+        <button v-show="$store.getters['search/recentlyKeywordReverse'].length" type="button" class="btn-remove-all" @click="keywordRemoveAll($event)">
+          <span>전체삭제</span>
+        </button>
+      </template>
     </div>
   </div>
 </template>

@@ -6,6 +6,14 @@ export default {
 
   target: 'static',
 
+  env: {
+    NODE_ENV: process.env.NODE_ENV,
+    API_LIST_URL: process.env.API_LIST_URL,
+    API_LIST_KEY: process.env.API_LIST_KEY,
+    API_PRODUCT_URL: process.env.API_PRODUCT_URL,
+    API_PRODUCT_KEY: process.env.API_PRODUCT_KEY,
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'find-my-mask',
@@ -61,21 +69,11 @@ export default {
       target: process.env.API_LIST_URL,
       pathRewrite: { '^/list/': '' },
       logLevel: 'debug',
-      onProxyReq: (proxyReq, req, res) => {
-        proxyReq.path += req._parsedOriginalUrl.search ? '&' : '?';
-        proxyReq.path += 'serviceKey=' + encodeURIComponent(process.env.API_LIST_KEY);
-        proxyReq.path += '&type=json';
-      },
     },
     '/product/': {
       target: process.env.API_PRODUCT_URL,
       pathRewrite: { '^/product/': '' },
       logLevel: 'debug',
-      onProxyReq: (proxyReq, req, res) => {
-        proxyReq.path += req._parsedOriginalUrl.search ? '&' : '?';
-        proxyReq.path += 'serviceKey=' + encodeURIComponent(process.env.API_PRODUCT_KEY);
-        proxyReq.path += '&type=json';
-      },
     },
   },
 };

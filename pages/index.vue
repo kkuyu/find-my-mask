@@ -72,7 +72,6 @@ export default {
       formData.value.isLoading = true;
 
       const params = {
-        class_no: formData.value.drugCode,
         BSSH_NM: encodeURIComponent(formData.value.category === 'company' ? formData.value.keyword : ''),
         PRDLST_NM: encodeURIComponent(formData.value.category === 'product' ? formData.value.keyword : ''),
         pageNo: resultData.value.pageNo,
@@ -83,6 +82,12 @@ export default {
         .getList(params)
         .then((response) => {
           formData.value.isLoading = false;
+          console.log(response);
+          if (!response.data.body) {
+            resultData.value.status = 'error';
+            if (eventType === 'onScrolling') state.error();
+            return;
+          }
           if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
             resultData.value.status = 'update';
             resultData.value.list.push(...response.data.body.items);
