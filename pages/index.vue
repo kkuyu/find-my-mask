@@ -82,7 +82,6 @@ export default {
         .getList(params)
         .then((response) => {
           formData.value.isLoading = false;
-          console.log(response);
           if (!response.data.body) {
             resultData.value.status = 'error';
             if (eventType === 'onScrolling') state.error();

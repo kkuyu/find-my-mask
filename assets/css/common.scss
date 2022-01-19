@@ -59,7 +59,11 @@ button {
 }
 
 input {
+  display: block;
   background: transparent;
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .hidden {

@@ -6,6 +6,10 @@ export default {
 
   target: 'static',
 
+  generate: {
+    fallback: true,
+  },
+
   env: {
     NODE_ENV: process.env.NODE_ENV,
     API_LIST_URL: process.env.API_LIST_URL,

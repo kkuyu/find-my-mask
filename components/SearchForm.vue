@@ -5,7 +5,7 @@
       <div class="radio-tab">
         <div class="radio-tab-inner">
           <template v-for="item in formStructure.category.options">
-            <input :key="`input-${item.value}`" type="radio" class="hidden" v-model="formValue.category" :id="item.value" :value="item.value" required />
+            <input :key="`input-${item.value}`" type="radio" v-model="formValue.category" :id="item.value" :value="item.value" required />
             <label :key="`label-${item.value}`" :for="item.value">{{ item.text }}</label>
           </template>
           <span class="hint" />
@@ -236,6 +236,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: -10rem;
     width: 10rem;
     height: 2.25rem;
     font-size: 1rem;
@@ -245,6 +246,8 @@ export default {
     z-index: 2;
   }
   input[type='radio'] {
+    width: 10rem;
+    height: 2.25rem;
     &:checked + label {
       font-weight: 600;
     }
@@ -269,7 +272,7 @@ export default {
 }
 
 .input-form {
-  input[type='text'] {
+  input {
     width: 100%;
     padding: 1.25rem 3.75rem;
     font-size: 1.25rem;
