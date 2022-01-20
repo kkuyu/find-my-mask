@@ -115,7 +115,7 @@ export default {
   border-radius: 0.5rem;
   ::v-deep .detail-section {
     &:not(:first-child) {
-      margin-top: 1.25rem;
+      margin-top: 1.5rem;
     }
     .title {
       display: block;

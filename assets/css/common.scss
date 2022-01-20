@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Hahmlet', serif;
+  font-family: 'Noto Sans KR', sans-serif;
   margin: 0 auto;
   min-width: 360px;
   max-width: 720px;
@@ -30,11 +30,11 @@ li {
 h1,
 h2 {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 strong {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 p {
@@ -50,20 +50,25 @@ a {
   text-decoration: none;
 }
 
-button {
+button,
+[type='button'] {
   cursor: pointer;
   padding: 0;
   color: #222;
   background: transparent;
   border: none;
+  border-radius: 0;
+  appearance: none !important;
+  -webkit-appearance: none !important;
 }
 
 input {
   display: block;
   background: transparent;
   border: none;
-  appearance: none;
-  -webkit-appearance: none;
+  border-radius: 0;
+  appearance: none !important;
+  -webkit-appearance: none !important;
 }
 
 .hidden {
@@ -74,4 +79,12 @@ input {
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.result-empty,
+.result-error,
+.infinite-loading-container {
+  font-weight: 0.875rem;
+  text-align: center;
+  color: var(--color-gray);
 }

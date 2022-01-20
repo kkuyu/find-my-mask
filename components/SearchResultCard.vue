@@ -7,8 +7,14 @@
       <span class="description">
         {{ query.company ? data.product : query.product ? data.company : '' }}
       </span>
-      <em v-if="data.class" class="hashtag"><font-awesome-icon :icon="['fas', 'hashtag']" />{{ data.class }}</em>
-      <em v-if="data.grade" class="hashtag"><font-awesome-icon :icon="['fas', 'hashtag']" />{{ data.grade }}</em>
+      <em v-if="data.class" class="badge">
+        <font-awesome-icon :icon="['fas', 'hashtag']" />
+        <span class="text">{{ data.class }}</span>
+      </em>
+      <em v-if="data.grade" class="badge">
+        <font-awesome-icon :icon="['fas', 'hashtag']" />
+        <span class="text">{{ data.grade }}</span>
+      </em>
     </component>
   </div>
 </template>
@@ -63,16 +69,18 @@ export default {
     font-size: 0.875rem;
     color: var(--color-gray);
   }
-  .hashtag {
+  .badge {
     display: inline-block;
     margin-top: 0.5rem;
     font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    padding: 0.25rem 0.5rem 0.4rem 0.5rem;
     color: var(--color-white);
     background-color: var(--color-primary);
     border-radius: 0.25rem;
-    .fa-hashtag {
-      margin-right: 0.25rem;
+    .fa-hashtag,
+    .text {
+      vertical-align: middle;
     }
   }
 }

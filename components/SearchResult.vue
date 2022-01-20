@@ -10,6 +10,9 @@
     <div v-if="resultData.status === 'complete' && !resultData.list.length" class="result-empty">
       <span>조회 결과가 없습니다.</span>
     </div>
+    <div v-if="resultData.status === 'error'" class="result-error">
+      <span>오류가 발생했습니다. 나중에 다시 시도해주세요.</span>
+    </div>
   </div>
 </template>
 
@@ -40,9 +43,5 @@ export default {
   li + li {
     margin-top: 1rem;
   }
-}
-
-.result-empty {
-  text-align: center;
 }
 </style>

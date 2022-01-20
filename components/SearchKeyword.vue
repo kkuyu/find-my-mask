@@ -44,7 +44,7 @@ export default {
 
     const keywordClick = ($event, keyword) => {
       $router.push({
-        path: '/',
+        path: '/search',
         query: {
           [keyword.category]: keyword.text,
         },

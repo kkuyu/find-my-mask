@@ -101,7 +101,7 @@ export default {
       if ($route.value.query[props.formData.category] === keyword.text) return false;
 
       $router.push({
-        path: '/',
+        path: '/search',
         query: {
           [props.formData.category]: keyword.text,
         },
@@ -249,7 +249,7 @@ export default {
     width: 10rem;
     height: 2.25rem;
     &:checked + label {
-      font-weight: 600;
+      font-weight: 700;
     }
     &[id='company']:checked ~ .hint {
       transform: translateX(-100%);
