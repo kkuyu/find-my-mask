@@ -1,4 +1,5 @@
 import * as FontAwesome from './icon/fontawesome';
+import configure from './configure';
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -20,21 +21,50 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'find-my-mask',
     htmlAttrs: {
       lang: 'ko',
     },
+    titleTemplate: new Function('titleChunk', `return titleChunk ? titleChunk + ' ${' | ' + configure.title}' : '${configure.title}'`),
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: configure.description },
       { name: 'format-detection', content: 'telephone=no' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: configure.url },
+      { property: 'og:title', content: configure.title },
+      { property: 'og:description', content: configure.description },
+      { property: 'og:image', content: '/share-image.png' },
+      { property: 'og:image.width', content: '1200' },
+      { property: 'og:image.height', content: '620' },
+      { name: 'twitter:card', content: 'photo' },
+      { name: 'twitter:title', content: configure.titleTITLE },
+      { name: 'twitter:description', content: configure.description },
+      { name: 'twitter:image', content: '/share-image.png' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&display=swap' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;700&display=swap' },
+      { rel: 'apple-touch-icon', sizes: '57x57', href: '/apple-icon-57x57.png' },
+      { rel: 'apple-touch-icon', sizes: '60x60', href: '/apple-icon-60x60.png' },
+      { rel: 'apple-touch-icon', sizes: '72x72', href: '/apple-icon-72x72.png' },
+      { rel: 'apple-touch-icon', sizes: '76x76', href: '/apple-icon-76x76.png' },
+      { rel: 'apple-touch-icon', sizes: '114x114', href: '/apple-icon-114x114.png' },
+      { rel: 'apple-touch-icon', sizes: '120x120', href: '/apple-icon-120x120.png' },
+      { rel: 'apple-touch-icon', sizes: '144x144', href: '/apple-icon-144x144.png' },
+      { rel: 'apple-touch-icon', sizes: '152x152', href: '/apple-icon-152x152.png' },
+      { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-icon-180x180.png' },
+      { rel: 'icon', type: 'image/png', sizes: '36x36', href: '/android-icon-36x36.png' },
+      { rel: 'icon', type: 'image/png', sizes: '48x48', href: '/android-icon-48x48.png' },
+      { rel: 'icon', type: 'image/png', sizes: '72x72', href: '/android-icon-72x72.png' },
+      { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/android-icon-96x96.png' },
+      { rel: 'icon', type: 'image/png', sizes: '144x144', href: '/android-icon-144x144.png' },
+      { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-icon-192x192.png' },
+      { rel: 'shortcut icon', type: 'image/x-icon', sizes: '16x16', href: '/favicon-16x16.png' },
+      { rel: 'shortcut icon', type: 'image/x-icon', sizes: '32x32', href: '/favicon-32x32.png' },
+      { rel: 'shortcut icon', type: 'image/x-icon', sizes: '96x96', href: '/favicon-96x96.png' },
+      { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico' },
     ],
   },
 

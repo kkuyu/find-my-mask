@@ -9,6 +9,12 @@
 export default {
   layout: 'error',
   name: 'errorLayout',
+  head() {
+    return {
+      title: 'Error',
+      description: process.env.DESCRIPTION,
+    };
+  },
   components: {
     Error,
   },

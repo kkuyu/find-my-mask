@@ -26,6 +26,11 @@ import DetailSection from '@/components/DetailSection';
 
 export default {
   name: 'Detail',
+  head() {
+    return {
+      title: this.detailId,
+    };
+  },
   components: {
     DetailSection,
   },

@@ -14,6 +14,11 @@ import Footer from '@/components/Footer.vue';
 
 export default {
   name: 'defaultLayout',
+  head() {
+    return {
+      title: '',
+    };
+  },
   components: {
     Header,
     Footer,
