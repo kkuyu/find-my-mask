@@ -65,6 +65,7 @@ export default {
       { rel: 'shortcut icon', type: 'image/x-icon', sizes: '32x32', href: '/favicon-32x32.png' },
       { rel: 'shortcut icon', type: 'image/x-icon', sizes: '96x96', href: '/favicon-96x96.png' },
       { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'canonical', href: configure.url },
     ],
   },
 

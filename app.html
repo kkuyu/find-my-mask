@@ -9,7 +9,26 @@
         //
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@type": "WebSite",
+        "name": "Find My Mask",
+        "description": "마스크 품목명, 업체명, 등급, 허가일자, 허가상태, 등 상세 정보 확인 서비스",
+        "url": "https://find-my-mask.netlify.app/search"
+      }
+    </script>
     {{ HEAD }}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JVKP6PBHTM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-JVKP6PBHTM');
+    </script>
   </head>
   <body {{ BODY_ATTRS }}>
     {{ APP }}
