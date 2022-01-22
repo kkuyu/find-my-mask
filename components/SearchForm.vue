@@ -76,12 +76,12 @@ export default {
       category: {
         options: [
           {
-            value: 'company',
-            text: '업체명',
-          },
-          {
             value: 'product',
             text: '제품명',
+          },
+          {
+            value: 'company',
+            text: '업체명',
           },
         ],
       },
