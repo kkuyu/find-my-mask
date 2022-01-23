@@ -1,4 +1,16 @@
-# find-my-mask
+# Find My Mask
+
+마스크 품목명, 업체명, 등급, 허가일자, 허가상태, 등 상세 정보 확인 서비스
+
+## API list
+
+### 식품의약품안전처\_의약외품 제품 허가 정보
+
+식품의약품안전처에서 관리하는 의약외품 품목명, 용법용량, 효능효과, 사용상의 주의사항 등 의약외품의 허가정보를 제공
+
+### 식품의약품안전처\_마스크 허가현황 기본정보
+
+식품의약품안전처에서 관리하는 마스크 품목기준코드, 품목명, 업체명, 등급, 허가일자, 허가상태, 용도구분 정보를 제공
 
 ## Build Setup
 
@@ -40,7 +52,6 @@ More information about the usage of this directory in [the documentation](https:
 Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
 
 ### `pages`
 
