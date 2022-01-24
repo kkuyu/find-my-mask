@@ -40,13 +40,13 @@ export default {
     const $route = computed(() => context.root.$route);
 
     const formData = ref({
-      category: 'company',
+      category: '',
       keyword: '',
       isLoading: false,
     });
 
     const resultData = ref({
-      status: 'reset',
+      status: '',
       pageNo: 1,
       list: [],
     });
@@ -57,7 +57,7 @@ export default {
     };
 
     const resetFormData = () => {
-      formData.value.category = 'company';
+      formData.value.category = 'product';
       formData.value.keyword = '';
       formData.value.isLoading = false;
     };

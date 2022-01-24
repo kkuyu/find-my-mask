@@ -124,12 +124,11 @@ export default {
       observer.value
         .validate()
         .then((response) => {
-          console.log(response);
           if (response) {
-            console.log('valid');
+            // console.log('valid');
             context.emit('validSubmit');
           } else {
-            console.log('invalid', observer.value.fields);
+            // console.log('invalid', observer.value.fields);
             const keys = Object.keys(observer.value.fields);
             for (let i = 0; i < keys.length; i++) {
               const key = keys[i];
@@ -251,10 +250,10 @@ export default {
     &:checked + label {
       font-weight: 700;
     }
-    &[id='company']:checked ~ .hint {
+    &[id='product']:checked ~ .hint {
       transform: translateX(-100%);
     }
-    &[id='product']:checked ~ .hint {
+    &[id='company']:checked ~ .hint {
       transform: translateX(0%);
     }
   }
