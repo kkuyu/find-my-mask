@@ -56,7 +56,6 @@ export default {
     const getProductData = async (eventType, state) => {
       const params = {
         item_name: encodeURIComponent(detailId.value),
-        pageNo: 1,
         numOfRows: 1,
       };
 

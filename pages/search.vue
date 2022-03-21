@@ -47,14 +47,9 @@ export default {
 
     const resultData = ref({
       status: '',
-      pageNo: 1,
+      currentPage: 1,
       list: [],
     });
-
-    const updateFormData = () => {
-      formData.value.category = $route.value.query.company ? 'company' : 'product';
-      formData.value.keyword = $route.value.query[formData.value.category];
-    };
 
     const resetFormData = () => {
       formData.value.category = 'product';
@@ -63,18 +58,23 @@ export default {
     };
 
     const resetResultData = () => {
-      resultData.value.status = 'reset';
-      resultData.value.pageNo = 1;
+      resultData.value.status = '';
+      resultData.value.currentPage = 1;
       resultData.value.list = [];
     };
 
-    const getListData = async (eventType, state) => {
+    const updateFormData = () => {
+      formData.value.category = $route.value.query.company ? 'company' : 'product';
+      formData.value.keyword = $route.value.query[formData.value.category];
+    };
+
+    const updateResultData = async (eventType, state) => {
       formData.value.isLoading = true;
 
       const params = {
         BSSH_NM: encodeURIComponent(formData.value.category === 'company' ? formData.value.keyword : ''),
         PRDLST_NM: encodeURIComponent(formData.value.category === 'product' ? formData.value.keyword : ''),
-        pageNo: resultData.value.pageNo,
+        pageNo: resultData.value.currentPage,
         numOfRows: 10,
       };
 
@@ -118,8 +118,8 @@ export default {
     const onScrolling = (state) => {
       if (formData.value.isLoading === true) return false;
 
-      resultData.value.pageNo += 1;
-      getListData('onScrolling', state);
+      resultData.value.currentPage += 1;
+      updateResultData('onScrolling', state);
     };
 
     watch(
@@ -131,7 +131,7 @@ export default {
         } else {
           updateFormData();
           resetResultData();
-          getListData('onChangeQuery');
+          updateResultData('onChangeQuery');
           store.commit('search/addKeyword', {
             text: formData.value.keyword,
             category: formData.value.category,
@@ -147,7 +147,7 @@ export default {
       } else {
         updateFormData();
         resetResultData();
-        getListData('onMounted');
+        updateResultData('onMounted');
         store.commit('search/addKeyword', {
           text: formData.value.keyword,
           category: formData.value.category,

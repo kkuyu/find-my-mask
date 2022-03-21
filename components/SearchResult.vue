@@ -25,7 +25,7 @@ export default {
       required: true,
       default: () => ({
         status: 'reset',
-        pageNo: 1,
+        currentPage: 1,
         list: [],
       }),
     },

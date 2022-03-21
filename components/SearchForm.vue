@@ -265,6 +265,7 @@ export default {
     width: 50%;
     background-color: var(--color-secondary);
     border-radius: 0.5rem;
+    transform: translateX(-100%);
     transition: transform 0.25s ease-out;
     z-index: 1;
   }

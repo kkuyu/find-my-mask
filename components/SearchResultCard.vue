@@ -1,20 +1,20 @@
 <template>
   <div class="result-card" :class="{ isLoading: isLoading }">
     <component :is="isLoading ? 'div' : 'nuxt-link'" :to="isLoading ? false : `/detail/${data.product}`" class="box">
-      <strong class="title">
-        {{ query.company ? data.company : query.product ? data.product : '' }}
-      </strong>
-      <span class="description">
-        {{ query.company ? data.product : query.product ? data.company : '' }}
-      </span>
-      <em v-if="data.class" class="badge">
-        <font-awesome-icon :icon="['fas', 'hashtag']" />
-        <span class="text">{{ data.class }}</span>
-      </em>
-      <em v-if="data.grade" class="badge">
-        <font-awesome-icon :icon="['fas', 'hashtag']" />
-        <span class="text">{{ data.grade }}</span>
-      </em>
+      <template v-if="isCompany">
+        <strong class="title">{{ data.company }}</strong>
+        <span class="description">{{ data.product }}</span>
+      </template>
+      <template v-if="isProduct">
+        <strong class="title">{{ data.product }}</strong>
+        <span class="description">{{ data.company }}</span>
+      </template>
+      <template v-for="key in badgeItem">
+        <em v-if="data[key]" class="badge" :key="key">
+          <font-awesome-icon :icon="['fas', 'hashtag']" />
+          <span class="text">{{ data[key] }}</span>
+        </em>
+      </template>
     </component>
   </div>
 </template>
@@ -43,9 +43,16 @@ export default {
   },
   setup(props, context) {
     const query = computed(() => context.root.$route.query);
+    const isCompany = computed(() => query.value.hasOwnProperty('company'));
+    const isProduct = computed(() => query.value.hasOwnProperty('product'));
+
+    const badgeItem = ['class', 'grade'];
 
     return {
       query,
+      isCompany,
+      isProduct,
+      badgeItem,
     };
   },
 };
@@ -82,6 +89,9 @@ export default {
     .text {
       vertical-align: middle;
     }
+  }
+  .badge + .badge {
+    margin-left: 0.25rem;
   }
 }
 
