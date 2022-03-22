@@ -1,6 +1,6 @@
 <template>
   <section class="detail-section">
-    <strong class="title"><font-awesome-icon :icon="['fas', 'hashtag']" />{{ convertTitle() }}</strong>
+    <strong class="title"><font-awesome-icon :icon="['fas', 'hashtag']" aria-hidden="true" />{{ convertTitle() }}</strong>
     <template v-if="typeof content === 'string'">
       <p v-if="!content">-</p>
       <p v-else-if="title === 'ADD_INGR' || title === 'MAIN_INGR'">

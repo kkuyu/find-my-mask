@@ -18,14 +18,12 @@
         <div ref="keywordInput">
           <input :value="formValue.keyword" type="text" id="keyword" required="required" maxlength="3000" autocomplete="off" @input="formStructure.keyword.onInput" />
           <button v-if="formValue.keyword.length" type="button" class="btn-reset" @click="keywordReset">
-            <font-awesome-icon :icon="['fas', 'times-circle']" />
-            <span class="hidden">리셋</span>
+            <font-awesome-icon :icon="['fas', 'times-circle']" aria-label="리셋" />
           </button>
         </div>
         <SearchKeyword ref="keywordList" :class="{ show: showKeywordList }"> </SearchKeyword>
         <button type="submit" class="btn-submit" :disabled="formData.isLoading">
-          <font-awesome-icon :icon="['fas', 'search']" />
-          <span class="hidden">검색</span>
+          <font-awesome-icon :icon="['fas', 'search']" aria-label="검색" />
         </button>
       </div>
     </ValidationProvider>

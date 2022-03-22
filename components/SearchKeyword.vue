@@ -10,8 +10,7 @@
                 <span class="text">{{ keyword.text }}</span>
               </button>
               <button type="button" class="btn-remove" @click="keywordRemove($event, keyword)">
-                <font-awesome-icon :icon="['fas', 'times']" />
-                <span class="hidden">삭제</span>
+                <font-awesome-icon :icon="['fas', 'times']" aria-label="삭제" />
               </button>
             </li>
           </template>

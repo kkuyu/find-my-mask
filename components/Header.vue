@@ -2,11 +2,11 @@
   <div class="header">
     <component :is="isHome ? 'h1' : 'strong'">
       <NuxtLink v-if="isHome" :to="{ path: '/search', query: null }" class="header-link go-home">
-        <font-awesome-icon :icon="['fas', 'paperclip']" />
+        <font-awesome-icon :icon="['fas', 'paperclip']" aria-hidden="true" />
         <span class="text">Find My Mask</span>
       </NuxtLink>
       <button v-else type="button" class="header-link go-back" @click="historyBack">
-        <font-awesome-icon :icon="['fas', 'arrow-left']" />
+        <font-awesome-icon :icon="['fas', 'arrow-left']" aria-hidden="true" />
         <span class="text">Find My Mask</span>
       </button>
     </component>

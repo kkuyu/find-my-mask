@@ -11,7 +11,7 @@
       </template>
       <template v-for="key in badgeItem">
         <em v-if="data[key]" class="badge" :key="key">
-          <font-awesome-icon :icon="['fas', 'hashtag']" />
+          <font-awesome-icon :icon="['fas', 'hashtag']" aria-hidden="true" />
           <span class="text">{{ data[key] }}</span>
         </em>
       </template>

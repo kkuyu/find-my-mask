@@ -6,7 +6,7 @@
       <template v-else-if="error.statusCode === 500">오류가 발생했습니다. 나중에 다시 시도해주세요.</template>
       <template v-else>{{ error.message }}</template>
     </h1>
-    <NuxtLink :to="{ path: '/search', query: null }" class="error-link go-home"><font-awesome-icon :icon="['fas', 'hashtag']" /> 홈으로 이동</NuxtLink>
+    <NuxtLink :to="{ path: '/search', query: null }" class="error-link go-home"><font-awesome-icon :icon="['fas', 'hashtag']" aria-hidden="true" /> 홈으로 이동</NuxtLink>
   </div>
 </template>
 
