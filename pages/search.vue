@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- form -->
-    <SearchForm :formData="formData" @validSubmit="onFormSubmit"></SearchForm>
+    <SearchForm :isLoading="isLoading" :formData="formData" @validSubmit="onFormSubmit"></SearchForm>
     <!-- result -->
     <SearchResult :resultData="resultData">
       <template v-for="item in resultData.list" v-slot:[`resultListCard${item.PRDLST_SN}`]="{ data }">
@@ -9,7 +9,7 @@
       </template>
     </SearchResult>
     <!-- initial loading -->
-    <SearchResultCard v-if="formData.isLoading && !resultData.list.length" :isLoading="true" />
+    <SearchResultCard v-if="isLoading && !resultData.list.length" :isLoading="true" />
     <!-- infinite loading -->
     <InfiniteLoading v-if="resultData.list.length" @infinite="onScrolling">
       <div slot="spinner">
@@ -39,10 +39,11 @@ export default {
     const store = useStore();
     const $route = computed(() => context.root.$route);
 
+    const isLoading = ref(false);
+
     const formData = ref({
       category: '',
       keyword: '',
-      isLoading: false,
     });
 
     const resultData = ref({
@@ -54,7 +55,6 @@ export default {
     const resetFormData = () => {
       formData.value.category = 'product';
       formData.value.keyword = '';
-      formData.value.isLoading = false;
     };
 
     const resetResultData = () => {
@@ -69,8 +69,6 @@ export default {
     };
 
     const updateResultData = async (eventType, state) => {
-      formData.value.isLoading = true;
-
       const params = {
         BSSH_NM: encodeURIComponent(formData.value.category === 'company' ? formData.value.keyword : ''),
         PRDLST_NM: encodeURIComponent(formData.value.category === 'product' ? formData.value.keyword : ''),
@@ -81,7 +79,7 @@ export default {
       context.root.$api.mask
         .getList(params)
         .then((response) => {
-          formData.value.isLoading = false;
+          isLoading.value = false;
           if (!response.data.body) {
             resultData.value.status = 'error';
             if (eventType === 'onScrolling') state.error();
@@ -98,14 +96,14 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          formData.value.isLoading = false;
+          isLoading.value = false;
           resultData.value.status = 'error';
           if (eventType === 'onScrolling') state.error();
         });
     };
 
     const onFormSubmit = () => {
-      if (formData.value.isLoading === true) return false;
+      if (isLoading.value === true) return false;
 
       context.root.$router.push({
         path: '/search',
@@ -116,9 +114,10 @@ export default {
     };
 
     const onScrolling = (state) => {
-      if (formData.value.isLoading === true) return false;
+      if (isLoading.value === true) return false;
 
       resultData.value.currentPage += 1;
+      isLoading.value = true;
       updateResultData('onScrolling', state);
     };
 
@@ -126,9 +125,11 @@ export default {
       () => [$route.value.query.company, $route.value.query.product],
       () => {
         if (!Object.keys($route.value.query).length) {
+          isLoading.value = false;
           resetFormData();
           resetResultData();
         } else {
+          isLoading.value = true;
           updateFormData();
           resetResultData();
           updateResultData('onChangeQuery');
@@ -142,9 +143,11 @@ export default {
 
     onMounted(() => {
       if (!Object.keys($route.value.query).length) {
+        isLoading.value = false;
         resetFormData();
         resetResultData();
       } else {
+        isLoading.value = true;
         updateFormData();
         resetResultData();
         updateResultData('onMounted');
@@ -156,6 +159,7 @@ export default {
     });
 
     return {
+      isLoading,
       formData,
       resultData,
       onFormSubmit,

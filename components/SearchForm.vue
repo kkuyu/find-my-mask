@@ -22,7 +22,7 @@
           </button>
         </div>
         <SearchKeyword ref="keywordList" :class="{ show: showKeywordList }"> </SearchKeyword>
-        <button type="submit" class="btn-submit" :disabled="formData.isLoading">
+        <button type="submit" class="btn-submit" :disabled="isLoading">
           <font-awesome-icon :icon="['fas', 'search']" aria-label="검색" />
         </button>
       </div>
@@ -38,6 +38,11 @@ import SearchKeyword from '@/components/SearchKeyword';
 export default {
   name: 'SearchForm',
   props: {
+    isLoading: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     formData: {
       type: Object,
       required: true,

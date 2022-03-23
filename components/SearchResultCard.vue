@@ -1,6 +1,6 @@
 <template>
-  <div class="result-card" :class="{ isLoading: isLoading }">
-    <component :is="isLoading ? 'div' : 'nuxt-link'" :to="isLoading ? false : `/detail/${data.product}`" class="box">
+  <div class="result-card" :class="{ 'is-skeleton': isSkeleton }">
+    <component :is="isSkeleton ? 'div' : 'nuxt-link'" :to="isSkeleton ? false : `/detail/${data.product}`" class="box">
       <template v-if="isCompany">
         <strong class="title">{{ data.company }}</strong>
         <span class="description">{{ data.product }}</span>
@@ -35,7 +35,7 @@ export default {
         class: '',
       }),
     },
-    isLoading: {
+    isSkeleton: {
       type: Boolean,
       required: false,
       default: false,
@@ -95,7 +95,7 @@ export default {
   }
 }
 
-.result-card.isLoading {
+.result-card.is-skeleton {
   .title,
   .description {
     position: relative;
