@@ -20,7 +20,7 @@ export default {
 <style lang="scss" scoped>
 footer {
   .copy {
-    margin: 2rem 1rem;
+    padding: 2rem 1rem;
     font-size: 0.875rem;
     text-align: center;
     color: var(--color-gray);

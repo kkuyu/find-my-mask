@@ -1,4 +1,4 @@
-const solid = ['faPaperclip', 'faArrowLeft', 'faSearch', 'faTimes', 'faTimesCircle', 'faHashtag'];
+const solid = ['faPaperclip', 'faArrowLeft', 'faSearch', 'faTimes', 'faTimesCircle', 'faHashtag', 'faChevronLeft', 'faChevronRight'];
 
 const regular = [];
 

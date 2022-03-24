@@ -45,6 +45,7 @@ export default {
       $router.push({
         path: '/search',
         query: {
+          page: 1,
           [keyword.category]: keyword.text,
         },
       });

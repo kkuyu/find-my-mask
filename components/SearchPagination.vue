@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination-wrap">
+  <div v-if="resultData.status === 'update'" class="pagination-wrap">
     <span v-if="itemPrev.isVisible" class="pagination-item">
       <button type="button" class="is-prev" @click="updatePage(itemPrev.num)">
         <font-awesome-icon :icon="['fa', 'chevron-left']" aria-label="이전" />

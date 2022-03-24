@@ -5,14 +5,14 @@
       <template v-if="resultData.status === 'reset'">
         <p>제품 정보를 불러오고있습니다.</p>
       </template>
-      <template v-if="resultData.status === 'empty'">
+      <template v-else-if="resultData.status === 'update'">
+        <DetailSection v-for="(item, key) in resultData.detail" :key="key" :title="key" :content="item || ''"> </DetailSection>
+      </template>
+      <template v-else-if="resultData.status === 'empty'">
         <p>제품 정보를 불러올 수 없습니다.</p>
       </template>
-      <template v-if="resultData.status === 'error'">
+      <template v-else-if="resultData.status === 'error'">
         <p>오류가 발생했습니다. 나중에 다시 시도해주세요.</p>
-      </template>
-      <template v-if="resultData.status === 'update'">
-        <DetailSection v-for="(item, key) in resultData.detail" :key="key" :title="key" :content="item || ''"> </DetailSection>
       </template>
     </div>
   </article>
