@@ -73,7 +73,7 @@ export default {
   css: ['normalize.css', '@/assets/css/common.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '@/plugins/api.js' }, { src: '@/plugins/validation.js' }, { src: '@/plugins/infinite.js' }],
+  plugins: [{ src: '@/plugins/api.js' }, { src: '@/plugins/validation.js' }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

@@ -82,8 +82,7 @@ input {
 }
 
 .result-empty,
-.result-error,
-.infinite-loading-container {
+.result-error {
   font-weight: 0.875rem;
   text-align: center;
   color: var(--color-gray);
