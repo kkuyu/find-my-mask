@@ -30,7 +30,7 @@ export default {
       default: () => ({
         status: 'reset',
         currentPage: 1,
-        totalPage: 1,
+        totalPage: 0,
         list: [],
       }),
     },
@@ -47,14 +47,14 @@ export default {
     });
     const itemPrev = computed(() => {
       const firstNum = itemNums.value[0];
-      const prevNum = firstNum - 1;
-      if (prevNum < 1) return { isVisible: false, num: prevNum };
+      const prevNum = firstNum - 1 || 0;
+      if (prevNum === 0) return { isVisible: false, num: prevNum };
       return { isVisible: true, num: prevNum };
     });
     const itemNext = computed(() => {
       const lastNum = itemNums.value[itemNums.value.length - 1];
-      const nextNum = lastNum + 1;
-      if (nextNum > props.resultData.totalPage) return { isVisible: false, num: nextNum };
+      const nextNum = lastNum + 1 || 0;
+      if (nextNum > props.resultData.totalPage || nextNum === 0) return { isVisible: false, num: nextNum };
       return { isVisible: true, num: nextNum };
     });
 

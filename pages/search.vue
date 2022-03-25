@@ -46,7 +46,7 @@ export default {
     const resultData = ref({
       status: 'reset',
       currentPage: 1,
-      totalPage: 1,
+      totalPage: 0,
       list: [],
     });
 
@@ -58,7 +58,7 @@ export default {
     const resetResultData = () => {
       resultData.value.status = 'reset';
       resultData.value.currentPage = 1;
-      resultData.value.totalPage = 1;
+      resultData.value.totalPage = 0;
       resultData.value.list = [];
     };
 
@@ -68,7 +68,7 @@ export default {
     };
 
     const updateResultData = async () => {
-      resultData.value.currentPage = parseInt($route.value.query.page);
+      resultData.value.currentPage = parseInt($route.value.query.page) || 1;
       resultData.value.list = [];
 
       const params = {
@@ -80,13 +80,17 @@ export default {
 
       const response = await context.root.$api.mask.getList(params);
       try {
+        // negative
+        if (resultData.value.currentPage <= 0) {
+          throw { name: 'negative' };
+        }
         // emptyBody
-        if (!response.data.body) {
+        if (!response.data.body || Object.keys(response.data.body).length === 0) {
           throw { name: 'emptyBody' };
         }
         // totalPageOver
         const totalPage = Math.ceil(response.data.body.totalCount / 10);
-        if (resultData.value.currentPage > totalPage) {
+        if (totalPage !== 0 && resultData.value.currentPage > totalPage) {
           throw { name: 'totalPageOver', totalPage };
         }
         // naturel data
@@ -97,7 +101,19 @@ export default {
           resultData.value.list.push(...response.data.body.items);
         }
       } catch (error) {
-        if (error.name === 'totalPageOver') {
+        if (error.name === 'negative') {
+          context.root.$router.push({
+            path: '/search',
+            query: {
+              page: 1,
+              [formData.value.category]: formData.value.keyword,
+            },
+          });
+          return;
+        } else if (error.name === 'emptyBody') {
+          isLoading.value = false;
+          resultData.value.status = 'error';
+        } else if (error.name === 'totalPageOver') {
           context.root.$router.push({
             path: '/search',
             query: {
@@ -106,9 +122,6 @@ export default {
             },
           });
           return;
-        } else if (error.name === 'emptyBody') {
-          isLoading.value = false;
-          resultData.value.status = 'error';
         } else {
           console.log(error);
           isLoading.value = false;

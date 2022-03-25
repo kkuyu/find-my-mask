@@ -34,7 +34,7 @@ export default {
       default: () => ({
         status: 'reset',
         currentPage: 1,
-        totalPage: 1,
+        totalPage: 0,
         list: [],
       }),
     },
