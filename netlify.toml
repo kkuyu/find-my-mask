@@ -6,7 +6,7 @@
 
 [[redirects]]
   from = "/product/*"
-  to = "http://apis.data.go.kr/1471000/QdrgPrdtPrmsnInfoService/:splat"
+  to = "http://apis.data.go.kr/1471000/QdrgPrdtPrmsnInfoService01/:splat"
   status = 200
   force = true
 
@@ -17,7 +17,17 @@
   force = true
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/search"
   status = 200
+  force = false
+  
+[[redirects]]
+  from = "/detail/*"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
   force = false
