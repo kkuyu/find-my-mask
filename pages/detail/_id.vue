@@ -47,36 +47,35 @@ export default {
       const result = { ...object };
       for (const key in result) {
         if (Object.hasOwnProperty.call(result, key) && key.indexOf('_DOC_') !== -1) {
+          if (/^http/.test(result[key])) continue;
           result[key] = JSON.parse(convert.xml2json(result[key], { compact: true, spaces: 4 }));
         }
       }
       return result;
     };
 
-    const getProductData = async (eventType, state) => {
+    const getProductData = async () => {
       const params = {
         item_name: encodeURIComponent(detailId.value),
         numOfRows: 1,
       };
 
-      context.root.$api.mask
-        .getProduct(params)
-        .then((response) => {
-          if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
-            if (detailId.value === response.data.body.items[0].ITEM_NAME) {
-              resultData.value.status = 'update';
-              resultData.value.detail = convertData(response.data.body.items[0]);
-            } else {
-              resultData.value.status = 'empty';
-            }
+      const response = await context.root.$api.mask.getProduct(params);
+      try {
+        if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
+          if (detailId.value === response.data.body.items[0].ITEM_NAME) {
+            resultData.value.status = 'update';
+            resultData.value.detail = convertData(response.data.body.items[0]);
           } else {
             resultData.value.status = 'empty';
           }
-        })
-        .catch((error) => {
-          console.log(error);
-          resultData.value.status = 'error';
-        });
+        } else {
+          resultData.value.status = 'empty';
+        }
+      } catch (error) {
+        console.log(error);
+        resultData.value.status = 'error';
+      }
     };
 
     watch(
@@ -124,6 +123,9 @@ export default {
     .fa-hashtag {
       margin-right: 4px;
       color: #5873de;
+    }
+    .link {
+      text-decoration: underline;
     }
   }
 }

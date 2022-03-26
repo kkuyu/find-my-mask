@@ -11,6 +11,9 @@
             .join(', ')
         }}
       </p>
+      <p v-else-if="/^http/.test(content)">
+        <a :href="content" target="_blank" class="link">{{ content }}</a>
+      </p>
       <p v-else>{{ content }}</p>
     </template>
     <template v-if="typeof content === 'object' && !Array.isArray(content.DOC.SECTION.ARTICLE)">
@@ -81,6 +84,10 @@ export default {
           return '주의사항';
         case 'UD_DOC_DATA':
           return '용법용량';
+        case 'ENTP_NO':
+          return '업허가번호';
+        case 'ENTP_SEQ':
+          return '업일련번호';
       }
     };
 

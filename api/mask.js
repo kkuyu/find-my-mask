@@ -10,7 +10,7 @@ export default (axios, env) => ({
     });
   },
   getProduct(params) {
-    const url = 'product/getQdrgPrdtPrmsnInfoInq';
+    const url = 'product/getQdrgPrdtPrmsnInfoInq01';
     return axios.get(url, {
       params: {
         ...params,
