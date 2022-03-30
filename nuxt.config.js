@@ -79,7 +79,7 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/composition-api/module', ['@nuxtjs/fontawesome', { component: 'fontAwesome', suffix: true }]],
+  buildModules: ['@nuxtjs/composition-api/module', ['@nuxtjs/fontawesome', { component: 'fontAwesome', suffix: true }], '@nuxt/typescript-build'],
 
   fontawesome: {
     icons: {
