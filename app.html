@@ -15,7 +15,7 @@
         "@type": "WebSite",
         "name": "Find My Mask",
         "description": "마스크 품목명, 업체명, 등급, 허가일자, 허가상태, 등 상세 정보 확인 서비스",
-        "url": "https://find-my-mask.netlify.app/search"
+        "url": "https://find-my-mask.com"
       }
     </script>
     {{ HEAD }}
@@ -26,8 +26,9 @@
       function gtag() {
         dataLayer.push(arguments);
       }
+      var gaID = window.location.origin.includes('netlify.app') ? 'G-JVKP6PBHTM' : 'G-D7Z63DB5J8';
       gtag('js', new Date());
-      gtag('config', 'G-JVKP6PBHTM');
+      gtag('config', gaID);
     </script>
   </head>
   <body {{ BODY_ATTRS }}>
