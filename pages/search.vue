@@ -155,11 +155,10 @@ export default {
     watch(
       () => $route.value.query,
       () => {
-        if (!Object.keys($route.value.query).length) {
-          isLoading.value = false;
-          resetFormData();
-          resetResultData();
-        } else {
+        isLoading.value = false;
+        resetFormData();
+        resetResultData();
+        if (Object.keys($route.value.query).length) {
           isLoading.value = true;
           updateFormData();
           updateResultData();
@@ -172,11 +171,10 @@ export default {
     );
 
     onMounted(() => {
-      if (!Object.keys($route.value.query).length) {
-        isLoading.value = false;
-        resetFormData();
-        resetResultData();
-      } else {
+      isLoading.value = false;
+      resetFormData();
+      resetResultData();
+      if (Object.keys($route.value.query).length) {
         isLoading.value = true;
         updateFormData();
         updateResultData();
