@@ -162,7 +162,7 @@ export default {
           isLoading.value = true;
           updateFormData();
           updateResultData();
-          store.commit('search/addKeyword', {
+          store.commit('search/ADD_KEYWORD', {
             text: formData.value.keyword,
             category: formData.value.category,
           });
@@ -178,7 +178,7 @@ export default {
         isLoading.value = true;
         updateFormData();
         updateResultData();
-        store.commit('search/addKeyword', {
+        store.commit('search/ADD_KEYWORD', {
           text: formData.value.keyword,
           category: formData.value.category,
         });

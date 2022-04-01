@@ -26,7 +26,7 @@ export default {
   setup(props, context) {
     const store = useStore();
 
-    store.commit('search/initStore');
+    store.commit('search/INIT_STORE');
 
     store.subscribe((mutation, state) => {
       typeof window !== 'undefined' && localStorage.setItem('storeSearch', JSON.stringify(state.search));
