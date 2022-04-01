@@ -2,8 +2,8 @@
   <div class="keyword-wrap">
     <div class="keyword-body">
       <template v-if="$store.state.search.isSaveMode === true">
-        <ul v-show="$store.getters['search/recentlyKeywordReverse'].length" class="keyword-list">
-          <template v-for="keyword in $store.getters['search/recentlyKeywordReverse']">
+        <ul v-show="keywordList.length" class="keyword-list">
+          <template v-for="keyword in keywordList">
             <li :key="`${keyword.category}-${keyword.text}`">
               <button type="button" class="btn-item" @click="keywordClick($event, keyword)">
                 <span class="badge">{{ keyword.category === 'company' ? '업체명' : '제품명' }}</span>
@@ -15,7 +15,7 @@
             </li>
           </template>
         </ul>
-        <div v-show="!$store.getters['search/recentlyKeywordReverse'].length" class="keyword-empty">최근 검색어 내역이 없습니다.</div>
+        <div v-show="!keywordList.length" class="keyword-empty">최근 검색어 내역이 없습니다.</div>
       </template>
       <div v-else class="keyword-off">검색어 저장 기능이 꺼져있습니다.</div>
     </div>
@@ -24,7 +24,7 @@
         <span>자동저장 {{ $store.state.search.isSaveMode === true ? '끄기' : '켜기' }}</span>
       </button>
       <template v-if="$store.state.search.isSaveMode === true">
-        <button v-show="$store.getters['search/recentlyKeywordReverse'].length" type="button" class="btn-remove-all" @click="keywordRemoveAll($event)">
+        <button v-show="keywordList.length" type="button" class="btn-remove-all" @click="keywordRemoveAll($event)">
           <span>전체삭제</span>
         </button>
       </template>
@@ -40,6 +40,10 @@ export default {
   setup(props, context) {
     const store = useStore();
     const $router = context.root.$router;
+
+    const keywordList = computed(() => {
+      return store.getters['search/RECENTLY_LIST_REVERSE'];
+    });
 
     const keywordClick = ($event, keyword) => {
       $router.push({
@@ -64,6 +68,7 @@ export default {
     };
 
     return {
+      keywordList,
       keywordRemoveAll,
       keywordClick,
       keywordRemove,
