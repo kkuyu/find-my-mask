@@ -10,8 +10,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api';
+
+export default defineComponent({
   layout: 'error',
   name: 'errorLayout',
   head() {
@@ -25,12 +27,14 @@ export default {
       type: Object,
       required: false,
       default: () => {
-        return {};
+        return {
+          statusCode: null,
+          message: null,
+        };
       },
     },
   },
-  setup(props, context) {},
-};
+});
 </script>
 
 <style lang="scss" scoped>
