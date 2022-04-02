@@ -14,17 +14,21 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api';
+
+export default defineComponent({
   name: 'DetailDoc',
   props: {
     content: {
       type: Object,
       required: true,
-      default: () => ({}),
+      default: () => ({
+        _cdata: null,
+        PARAGRAPH: null,
+        _attributes: null,
+      }),
     },
   },
-};
+});
 </script>
-
-<style></style>
