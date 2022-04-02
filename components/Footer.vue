@@ -1,20 +1,22 @@
 <template>
   <footer>
-    <p class="copy">&copy; {{ year }} All rights reserved</p>
+    <p class="copy">&copy; {{ yearString }} All rights reserved</p>
   </footer>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api';
+
+export default defineComponent({
   name: 'Footer',
   setup(props, context) {
-    const year = new Date().getFullYear();
+    const yearString: string = new Date().getFullYear().toString();
 
     return {
-      year,
+      yearString,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

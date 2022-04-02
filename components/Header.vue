@@ -13,25 +13,24 @@
   </div>
 </template>
 
-<script>
-import { computed } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { computed, ComputedRef, defineComponent } from '@nuxtjs/composition-api';
 
-export default {
+export default defineComponent({
   name: 'Header',
   setup(props, context) {
-    const isHome = computed(() => {
+    const isHome: ComputedRef<boolean> = computed(() => {
       if (context.root.$route.path === '/') return true;
       if (context.root.$route.path.includes('/search')) return true;
       return false;
     });
 
-    const historyBack = () => {
+    const historyBack: () => void = () => {
       if (window.history.length > 1) {
         context.root.$router.back();
       } else {
         context.root.$router.push({
           path: '/search',
-          query: null,
         });
       }
     };
@@ -41,7 +40,7 @@ export default {
       isHome,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
