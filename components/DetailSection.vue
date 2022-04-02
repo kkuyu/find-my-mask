@@ -1,6 +1,6 @@
 <template>
   <section class="detail-section">
-    <strong class="title"><font-awesome-icon :icon="['fas', 'hashtag']" aria-hidden="true" />{{ convertTitle() }}</strong>
+    <strong class="title"><font-awesome-icon :icon="['fas', 'hashtag']" aria-hidden="true" />{{ convertTitle }}</strong>
     <template v-if="typeof content === 'string'">
       <p v-if="!content">-</p>
       <p v-else-if="title === 'ADD_INGR' || title === 'MAIN_INGR'">
@@ -35,10 +35,12 @@
   </section>
 </template>
 
-<script>
-import DetailDoc from '@/components/DetailDoc';
+<script lang="ts">
+import { computed, ComputedRef, defineComponent } from '@nuxtjs/composition-api';
 
-export default {
+import DetailDoc from '@/components/DetailDoc.vue';
+
+export default defineComponent({
   name: 'DetailSection',
   components: {
     DetailDoc,
@@ -56,7 +58,7 @@ export default {
     },
   },
   setup(props, context) {
-    const convertTitle = () => {
+    const convertTitle: ComputedRef<string> = computed(() => {
       switch (props.title) {
         case 'ADD_INGR':
           return '첨가제';
@@ -88,14 +90,14 @@ export default {
           return '업허가번호';
         case 'ENTP_SEQ':
           return '업일련번호';
+        default:
+          return props.title;
       }
-    };
+    });
 
     return {
       convertTitle,
     };
   },
-};
+});
 </script>
-
-<style></style>
