@@ -1,5 +1,5 @@
-import * as FontAwesome from './icon/fontawesome';
-import configure from './configure';
+import * as FontAwesome from './icon/fontawesome.ts';
+import configure from './configure.ts';
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
