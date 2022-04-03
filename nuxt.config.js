@@ -89,7 +89,7 @@ export default {
     },
   },
 
-  serverMiddleware: ['@/middleware/redirects.js'],
+  serverMiddleware: ['@/middleware/redirects.ts'],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/axios', '@nuxtjs/proxy'],
