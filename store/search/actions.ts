@@ -24,7 +24,9 @@ const actions = {
   [ActionName.INIT_STORE](context: ActionContext): void {
     if (typeof window !== 'undefined' && localStorage.getItem('storeSearch')) {
       const savedData: string = localStorage.getItem('storeSearch') || '{}';
-      context.commit(MutationName.SET_SEARCH_DATA, Object.assign(context.state, JSON.parse(savedData)));
+      const updateData = Object.assign({ ...context.state }, JSON.parse(savedData));
+      context.commit(MutationName.SET_IS_SAVE_MODE, updateData.isSaveMode);
+      context.commit(MutationName.SET_RECENTLY_KEYWORD, updateData.recentlyKeyword);
     }
   },
   [ActionName.CHANGE_SAVE_MODE](context: ActionContext, payload: SearchState['isSaveMode']): void {

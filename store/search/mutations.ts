@@ -2,15 +2,11 @@ import { CommitOptions } from 'vuex';
 import { IsSaveModeType, KeywordType, SearchState } from './state';
 
 export enum MutationName {
-  SET_SEARCH_DATA = 'SET_SEARCH_DATA',
   SET_IS_SAVE_MODE = 'SET_IS_SAVE_MODE',
   SET_RECENTLY_KEYWORD = 'SET_RECENTLY_KEYWORD',
 }
 
 const mutations = {
-  [MutationName.SET_SEARCH_DATA](state: SearchState, payload: SearchState): void {
-    state = { ...state, ...payload };
-  },
   [MutationName.SET_IS_SAVE_MODE](state: SearchState, payload: IsSaveModeType): void {
     state.isSaveMode = payload;
   },
