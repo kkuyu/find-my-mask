@@ -3,12 +3,12 @@ export type KeywordType = {
   text: string;
 };
 
-export type StateType = {
+export type SearchState = {
   isSaveMode: boolean;
   recentlyKeyword: KeywordType[];
 };
 
-const search = (): StateType => ({
+const search = (): SearchState => ({
   isSaveMode: true,
   recentlyKeyword: [],
 });
