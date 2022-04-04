@@ -1,5 +1,5 @@
-import * as FontAwesome from './icon/fontawesome.ts';
-import configure from './configure.ts';
+import * as FontAwesome from './icon/fontawesome';
+import configure from './configure';
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -12,11 +12,11 @@ export default {
   },
 
   env: {
-    NODE_ENV: process.env.NODE_ENV,
-    API_LIST_URL: process.env.API_LIST_URL,
-    API_LIST_KEY: process.env.API_LIST_KEY,
-    API_PRODUCT_URL: process.env.API_PRODUCT_URL,
-    API_PRODUCT_KEY: process.env.API_PRODUCT_KEY,
+    NODE_ENV: process.env.NODE_ENV || '',
+    API_LIST_URL: process.env.API_LIST_URL || '',
+    API_LIST_KEY: process.env.API_LIST_KEY || '',
+    API_PRODUCT_URL: process.env.API_PRODUCT_URL || '',
+    API_PRODUCT_KEY: process.env.API_PRODUCT_KEY || '',
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -38,7 +38,7 @@ export default {
       { property: 'og:image.width', content: '1200' },
       { property: 'og:image.height', content: '620' },
       { name: 'twitter:card', content: 'photo' },
-      { name: 'twitter:title', content: configure.titleTITLE },
+      { name: 'twitter:title', content: configure.title },
       { name: 'twitter:description', content: configure.description },
       { name: 'twitter:image', content: '/share-image.png' },
     ],
