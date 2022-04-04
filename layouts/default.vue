@@ -10,7 +10,7 @@
 import { Store as VuexStore } from 'vuex';
 import { defineComponent, useStore } from '@nuxtjs/composition-api';
 
-import { MaskType } from '@/store/types';
+import { MaskState, MaskStore } from '@/store/types';
 
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
@@ -27,11 +27,11 @@ export default defineComponent({
     Footer,
   },
   setup(props, context) {
-    const store: VuexStore<MaskType> = useStore();
+    const store: MaskStore = useStore();
 
-    store.commit('search/INIT_STORE');
+    store.dispatch('search/INIT_STORE');
 
-    store.subscribe((mutation, state: MaskType) => {
+    store.subscribe((mutation, state: MaskState) => {
       typeof window !== 'undefined' && localStorage.setItem('storeSearch', JSON.stringify(state.search));
     });
   },

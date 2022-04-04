@@ -1,10 +1,12 @@
+export type IsSaveModeType = boolean;
+
 export type KeywordType = {
   category: string;
   text: string;
 };
 
 export type SearchState = {
-  isSaveMode: boolean;
+  isSaveMode: IsSaveModeType;
   recentlyKeyword: KeywordType[];
 };
 

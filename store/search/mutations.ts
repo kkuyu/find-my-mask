@@ -1,50 +1,21 @@
 import { CommitOptions } from 'vuex';
-import { KeywordType, SearchState } from './state';
+import { IsSaveModeType, KeywordType, SearchState } from './state';
 
 export enum MutationName {
-  INIT_STORE = 'INIT_STORE',
-  CHANGE_SAVE_MODE = 'CHANGE_SAVE_MODE',
-  ADD_KEYWORD = 'ADD_KEYWORD',
-  REMOVE_KEYWORD = 'REMOVE_KEYWORD',
-  REMOVE_RECENTLY_LIST = 'REMOVE_RECENTLY_LIST',
+  SET_SEARCH_DATA = 'SET_SEARCH_DATA',
+  SET_IS_SAVE_MODE = 'SET_IS_SAVE_MODE',
+  SET_RECENTLY_KEYWORD = 'SET_RECENTLY_KEYWORD',
 }
 
-const getIndex = (state: SearchState, payload: KeywordType) => {
-  return state.recentlyKeyword.findIndex((item) => {
-    return JSON.stringify(item) === JSON.stringify(payload);
-  });
-};
-
 const mutations = {
-  [MutationName.INIT_STORE](state: SearchState): void {
-    if (typeof window !== 'undefined' && localStorage.getItem('storeSearch')) {
-      const savedData: string = localStorage.getItem('storeSearch') || '{}';
-      state = Object.assign(state, JSON.parse(savedData));
-    }
+  [MutationName.SET_SEARCH_DATA](state: SearchState, payload: SearchState): void {
+    state = { ...state, ...payload };
   },
-  [MutationName.CHANGE_SAVE_MODE](state: SearchState, payload: SearchState['isSaveMode']): void {
+  [MutationName.SET_IS_SAVE_MODE](state: SearchState, payload: IsSaveModeType): void {
     state.isSaveMode = payload;
   },
-  [MutationName.ADD_KEYWORD](state: SearchState, payload: KeywordType): void {
-    if (state.isSaveMode === false) return;
-    const index = getIndex(state, payload);
-    if (index !== -1) {
-      state.recentlyKeyword.splice(index, 1);
-      state.recentlyKeyword.push(payload);
-    } else {
-      state.recentlyKeyword.push(payload);
-    }
-  },
-  [MutationName.REMOVE_KEYWORD](state: SearchState, payload: KeywordType): void {
-    if (state.isSaveMode === false) return;
-    const index = getIndex(state, payload);
-    if (index !== -1) {
-      state.recentlyKeyword.splice(index, 1);
-    }
-  },
-  [MutationName.REMOVE_RECENTLY_LIST](state: SearchState): void {
-    if (state.isSaveMode === false) return;
-    state.recentlyKeyword = [];
+  [MutationName.SET_RECENTLY_KEYWORD](state: SearchState, payload: KeywordType[]): void {
+    state.recentlyKeyword = payload;
   },
 };
 

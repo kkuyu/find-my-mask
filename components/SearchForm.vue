@@ -112,15 +112,15 @@ export default {
     };
 
     const keywordRemove = ($event, keyword) => {
-      store.commit('search/REMOVE_KEYWORD', keyword);
+      store.dispatch('search/REMOVE_KEYWORD', keyword);
     };
 
     const keywordRemoveAll = ($event) => {
-      store.commit('search/REMOVE_RECENTLY_LIST');
+      store.dispatch('search/REMOVE_RECENTLY_LIST');
     };
 
     const toggleSaveMode = ($event) => {
-      store.commit('search/CHANGE_SAVE_MODE', !store.state.search.isSaveMode);
+      store.dispatch('search/CHANGE_SAVE_MODE', !store.state.search.isSaveMode);
     };
 
     const onSubmit = () => {
