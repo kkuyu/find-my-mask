@@ -1,23 +1,10 @@
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
+import { AxiosResponse } from 'axios';
 
-type ListParams = {
-  BSSH_NM: string;
-  PRDLST_NM: string;
-  pageNo: number;
-  numOfRows: number;
-  serviceKey?: string;
-  type?: 'json' | 'xml';
-};
+import { ListParams, ListResult, ProductParams, ProductResult } from './maskTypes';
 
-type ProductParams = {
-  item_name: string;
-  numOfRows: number;
-  serviceKey?: string;
-  type?: 'json' | 'xml';
-};
-
-export default (axios: NuxtAxiosInstance, env: Record<string, any>) => ({
-  getList(params: ListParams) {
+const Mask = (axios: NuxtAxiosInstance, env: Record<string, any>) => ({
+  getList(params: ListParams): Promise<AxiosResponse<ListResult>> {
     const url = 'list/getMaskGradPrmsnStusListInq';
     return axios.get(url, {
       params: {
@@ -27,7 +14,7 @@ export default (axios: NuxtAxiosInstance, env: Record<string, any>) => ({
       },
     });
   },
-  getProduct(params: ProductParams) {
+  getProduct(params: ProductParams): Promise<AxiosResponse<ProductResult>> {
     const url = 'product/getQdrgPrdtPrmsnInfoInq01';
     return axios.get(url, {
       params: {
@@ -38,3 +25,5 @@ export default (axios: NuxtAxiosInstance, env: Record<string, any>) => ({
     });
   },
 });
+
+export default Mask;
