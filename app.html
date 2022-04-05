@@ -1,35 +1,7 @@
 <!DOCTYPE html>
 <html {{ HTML_ATTRS }}>
   <head {{ HEAD_ATTRS }}>
-    <script>
-      var agent = navigator.userAgent.toLowerCase();
-      if ((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || agent.indexOf('msie') != -1) {
-        window.location.replace('/not-support.html');
-      } else {
-        //
-      }
-    </script>
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org/",
-        "@type": "WebSite",
-        "name": "Find My Mask",
-        "description": "마스크 품목명, 업체명, 등급, 허가일자, 허가상태, 등 상세 정보 확인 서비스",
-        "url": "https://find-my-mask.com"
-      }
-    </script>
     {{ HEAD }}
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JVKP6PBHTM"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      var gaID = window.location.origin.includes('netlify.app') ? 'G-JVKP6PBHTM' : 'G-D7Z63DB5J8';
-      gtag('js', new Date());
-      gtag('config', gaID);
-    </script>
   </head>
   <body {{ BODY_ATTRS }}>
     {{ APP }}

@@ -12,6 +12,7 @@ export default {
   },
 
   env: {
+    GTAG_KEY: process.env.GTAG_KEY,
     NODE_ENV: process.env.NODE_ENV || '',
     API_LIST_URL: process.env.API_LIST_URL || '',
     API_LIST_KEY: process.env.API_LIST_KEY || '',
@@ -67,6 +68,45 @@ export default {
       { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'canonical', href: configure.url },
     ],
+    script: [
+      {
+        hid: 'agent',
+        innerHTML: `
+          var agent = navigator.userAgent.toLowerCase();
+          if ((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || agent.indexOf('msie') != -1) {
+            window.location.replace('/not-support.html');
+          }
+        `,
+      },
+      {
+        hid: 'schema',
+        type: 'application/ld+json',
+        innerHTML: `
+          {
+            "@context": "http://schema.org/",
+            "@type": "WebSite",
+            "name": "${configure.title}",
+            "description": "${configure.description}",
+            "url": "${configure.url}"
+          }
+        `,
+      },
+      { hid: 'gtag-load', src: `https://www.googletagmanager.com/gtag/js?id=${process.env.GTAG_KEY}`, async: true },
+      {
+        hid: 'gtag-js',
+        innerHTML: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          };
+          gtag('js', new Date());
+          gtag('config', '${process.env.GTAG_KEY}');
+        `,
+        type: 'text/javascript',
+        charset: 'utf-8',
+      },
+    ],
+    __dangerouslyDisableSanitizers: ['script'],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
