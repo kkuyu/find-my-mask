@@ -18,15 +18,19 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
 import convert from 'xml-js';
-import { ref, watch, computed, useRoute, onMounted } from '@nuxtjs/composition-api';
+import { ref, watch, computed, useRoute, onMounted, defineComponent, Ref } from '@nuxtjs/composition-api';
 
-import DetailSection from '@/components/DetailSection';
+import { MetaInfo } from 'vue-meta';
+import { ProductItem } from '@/api/maskTypes';
+import { SearchProductData, Status } from '@/types/view';
 
-export default {
+import DetailSection from '@/components/DetailSection.vue';
+
+export default defineComponent({
   name: 'Detail',
-  head() {
+  head(): MetaInfo {
     return {
       title: this.detailId,
     };
@@ -38,12 +42,12 @@ export default {
     const route = useRoute();
 
     const detailId = computed(() => route.value.params.id || '');
-    const resultData = ref({
-      status: 'reset',
-      detail: null,
+    const resultData: Ref<SearchProductData> = ref({
+      status: 'reset' as Status,
+      detail: {},
     });
 
-    const convertData = (object) => {
+    const convertData = (object: ProductItem) => {
       const result = { ...object };
       for (const key in result) {
         if (Object.hasOwnProperty.call(result, key) && key.indexOf('_DOC_') !== -1) {
@@ -54,7 +58,12 @@ export default {
       return result;
     };
 
-    const getProductData = async () => {
+    const resetProductData = (): void => {
+      resultData.value.status = 'reset';
+      resultData.value.detail = {};
+    };
+
+    const getProductData = async (): Promise<void> => {
       const params = {
         item_name: encodeURIComponent(detailId.value),
         numOfRows: 1,
@@ -81,15 +90,13 @@ export default {
     watch(
       () => detailId.value,
       () => {
-        resultData.value.status = 'reset';
-        resultData.value.detail = null;
+        resetProductData();
         getProductData();
       }
     );
 
     onMounted(() => {
-      resultData.value.status = 'reset';
-      resultData.value.detail = null;
+      resetProductData();
       getProductData();
     });
 
@@ -98,7 +105,7 @@ export default {
       resultData,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
