@@ -11,7 +11,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
+import { NuxtError } from '@nuxt/types';
+import { defineComponent, PropType } from '@nuxtjs/composition-api';
 
 export default defineComponent({
   layout: 'error',
@@ -24,12 +25,13 @@ export default defineComponent({
   },
   props: {
     error: {
-      type: Object,
+      type: Object as PropType<NuxtError>,
       required: false,
       default: () => {
         return {
           statusCode: null,
           message: null,
+          path: null,
         };
       },
     },
