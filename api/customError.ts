@@ -1,4 +1,4 @@
-import { CustomErrorInstance } from '~/plugins/error';
+import { CustomErrorInstance } from '@/plugins/error';
 
 const CustomError = class CustomError extends Error {
   constructor(label: string, extra?: object) {

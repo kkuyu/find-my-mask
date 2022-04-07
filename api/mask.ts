@@ -1,7 +1,7 @@
 import { NuxtAxiosInstance } from '@nuxtjs/axios';
 import { AxiosResponse } from 'axios';
 
-import { ListParams, ListResult, ProductParams, ProductResult } from './maskTypes';
+import { ListParams, ListResult, ProductParams, ProductResult } from '@/api/maskTypes';
 
 const Mask = (axios: NuxtAxiosInstance, env: Record<string, any>) => ({
   getList(params: ListParams): Promise<AxiosResponse<ListResult>> {

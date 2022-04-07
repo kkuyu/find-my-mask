@@ -1,5 +1,5 @@
 import { CommitOptions } from 'vuex';
-import { IsSaveModeType, KeywordType, SearchState } from './state';
+import { IsSaveModeType, KeywordType, SearchState } from '@/store/search/state';
 
 export enum MutationName {
   SET_IS_SAVE_MODE = 'SET_IS_SAVE_MODE',

@@ -1,6 +1,6 @@
 import { ActionContext as VuexActionContext, DispatchOptions } from 'vuex';
-import { MutationName, MutationType } from './mutations';
-import { IsSaveModeType, KeywordType, SearchState } from './state';
+import { MutationName, MutationType } from '@/store/search/mutations';
+import { IsSaveModeType, KeywordType, SearchState } from '@/store/search/state';
 
 export enum ActionName {
   INIT_STORE = 'INIT_STORE',

@@ -1,4 +1,4 @@
-import { KeywordType, SearchState } from './state';
+import { KeywordType, SearchState } from '@/store/search/state';
 
 export enum GetterName {
   RECENTLY_LIST_REVERSE = 'RECENTLY_LIST_REVERSE',

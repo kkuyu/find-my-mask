@@ -1,8 +1,8 @@
 import { Store as VuexStore } from 'vuex';
-import { SearchActions } from './search/actions';
-import { SearchGetters } from './search/getters';
-import { SearchMutations } from './search/mutations';
-import { SearchState } from './search/state';
+import { SearchActions } from '@/store/search/actions';
+import { SearchGetters } from '@/store/search/getters';
+import { SearchMutations } from '@/store/search/mutations';
+import { SearchState } from '@/store/search/state';
 
 export type MaskState = {
   search: SearchState;
