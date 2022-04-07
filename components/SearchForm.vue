@@ -1,5 +1,5 @@
 <template>
-  <ValidationObserver ref="observer" v-slot="{}" tag="form" class="form-observer" novalidate @submit.prevent="onSubmit">
+  <ValidationObserver ref="observer" v-slot="{}" tag="form" id="form-search" class="form-observer" novalidate @submit.prevent="onSubmit">
     <ValidationProvider v-slot="{}" :rules="{ required: true }" tag="div" class="form-provider">
       <span class="hidden">분류</span>
       <div class="radio-tab">
@@ -30,12 +30,26 @@
   </ValidationObserver>
 </template>
 
-<script>
-import { ref, computed, nextTick, useStore, onMounted, onUnmounted } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { ref, computed, nextTick, onMounted, onUnmounted, defineComponent, PropType, Ref, WritableComputedRef } from '@nuxtjs/composition-api';
+import { ValidationObserver } from 'vee-validate';
 
-import SearchKeyword from '@/components/SearchKeyword';
+import SearchKeyword from '@/components/SearchKeyword.vue';
+import { SearchFormData } from '@/types/view';
 
-export default {
+interface FormStructure {
+  category: {
+    options: {
+      value: string;
+      text: string;
+    }[];
+  };
+  keyword: {
+    onInput: (event: KeyboardEvent) => void;
+  };
+}
+
+export default defineComponent({
   name: 'SearchForm',
   props: {
     isLoading: {
@@ -44,7 +58,7 @@ export default {
       default: false,
     },
     formData: {
-      type: Object,
+      type: Object as PropType<SearchFormData>,
       required: true,
       default: () => ({
         category: '',
@@ -56,17 +70,13 @@ export default {
     SearchKeyword,
   },
   setup(props, context) {
-    const store = useStore();
-    const $route = computed(() => context.root.$route);
-    const $router = context.root.$router;
+    const observer: Ref<InstanceType<typeof ValidationObserver> | null> = ref(null);
+    const keywordInput: Ref<HTMLDivElement | null> = ref(null);
+    const keywordList: Ref<InstanceType<typeof SearchKeyword> | null> = ref(null);
 
-    const observer = ref();
-    const keywordInput = ref();
-    const keywordList = ref();
+    const showKeywordList: Ref<boolean> = ref(false);
 
-    const showKeywordList = ref(false);
-
-    const formValue = computed({
+    const formValue: WritableComputedRef<SearchFormData> = computed({
       get() {
         return props.formData;
       },
@@ -75,7 +85,7 @@ export default {
       },
     });
 
-    const formStructure = ref({
+    const formStructure: Ref<FormStructure> = ref({
       category: {
         options: [
           {
@@ -89,108 +99,102 @@ export default {
         ],
       },
       keyword: {
-        onInput: (event) => {
+        onInput: (event: KeyboardEvent) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           formValue.value.keyword = event.target.value;
         },
       },
     });
 
-    const keywordReset = ($event) => {
+    const keywordReset = ($event: MouseEvent): void => {
+      if (!(keywordInput.value instanceof HTMLDivElement)) return;
+
       formValue.value.keyword = '';
-      keywordInput.value.querySelector('input').focus();
+
+      const inputEl = keywordInput.value?.querySelector('input');
+      inputEl && inputEl.focus();
     };
 
-    const keywordClick = ($event, keyword) => {
-      if ($route.value.query[props.formData.category] === keyword.text) return false;
+    const onSubmit = async ($event: SubmitEvent): Promise<void> => {
+      if (!observer.value) return;
 
-      $router.push({
-        path: '/search',
-        query: {
-          [props.formData.category]: keyword.text,
-        },
-      });
-    };
+      const response: boolean = await observer.value.validate();
 
-    const keywordRemove = ($event, keyword) => {
-      store.dispatch('search/REMOVE_KEYWORD', keyword);
-    };
-
-    const keywordRemoveAll = ($event) => {
-      store.dispatch('search/REMOVE_RECENTLY_LIST');
-    };
-
-    const toggleSaveMode = ($event) => {
-      store.dispatch('search/CHANGE_SAVE_MODE', !store.state.search.isSaveMode);
-    };
-
-    const onSubmit = () => {
-      observer.value
-        .validate()
-        .then((response) => {
-          if (response) {
-            // console.log('valid');
-            context.emit('validSubmit');
-          } else {
-            // console.log('invalid', observer.value.fields);
-            const keys = Object.keys(observer.value.fields);
-            for (let i = 0; i < keys.length; i++) {
-              const key = keys[i];
-              const value = observer.value.fields[key];
-              if (value.valid === false) {
-                observer.value.refs[key].$el.querySelector('input').focus();
-                break;
-              }
-            }
+      try {
+        if (response) {
+          context.emit('validSubmit');
+          return;
+        }
+        const keys = Object.keys(observer.value.fields);
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          const value = observer.value.fields[key];
+          if (value.valid === false) {
+            const inputEl = observer.value.refs[key].$el?.querySelector('input');
+            inputEl && inputEl.focus();
+            break;
           }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        }
+      } catch (error: unknown) {
+        console.log(error);
+      }
     };
 
-    const onInputFocusIn = (event) => {
+    const onInputFocusIn = (event: FocusEvent): void => {
       showKeywordList.value = true;
     };
 
-    const onInputFocusOut = (event) => {
-      if (!keywordList.value.$el.contains(event.relatedTarget)) {
+    const onInputFocusOut = (event: FocusEvent): void => {
+      if (!(keywordList.value?.$el instanceof HTMLDivElement)) return;
+
+      if (!event.relatedTarget) {
+        showKeywordList.value = false;
+      } else if (!(event.relatedTarget instanceof HTMLElement)) {
+        showKeywordList.value = false;
+      } else if (!keywordList.value.$el.contains(event.relatedTarget)) {
         showKeywordList.value = false;
       }
     };
 
-    const onListFocusIn = (event) => {
+    const onListFocusIn = (event: FocusEvent): void => {
       //
     };
 
-    const onListFocusOut = (event) => {
-      if (event.relatedTarget === null) {
+    const onListFocusOut = (event: FocusEvent): void => {
+      if (!event.relatedTarget) {
         nextTick(() => {
-          keywordInput.value.querySelector('input').focus();
+          const inputEl = keywordInput.value?.querySelector('input');
+          inputEl && inputEl.focus();
         });
+
+        showKeywordList.value = false;
         return;
       }
-      if (!keywordList.value.$el.contains(event.relatedTarget) && !keywordInput.value.contains(event.relatedTarget)) {
+
+      if (!(event.relatedTarget instanceof HTMLElement)) {
+        showKeywordList.value = false;
+      } else if (!keywordList.value?.$el.contains(event.relatedTarget) && !keywordInput.value?.contains(event.relatedTarget)) {
         showKeywordList.value = false;
       }
     };
 
     onMounted(() => {
-      if (keywordInput.value) {
+      if (keywordInput.value && keywordInput.value instanceof HTMLDivElement) {
         keywordInput.value.addEventListener('focusin', onInputFocusIn);
         keywordInput.value.addEventListener('focusout', onInputFocusOut);
       }
-      if (keywordList.value) {
+      if (keywordList.value && keywordList.value.$el instanceof HTMLDivElement) {
         keywordList.value.$el.addEventListener('focusin', onListFocusIn);
         keywordList.value.$el.addEventListener('focusout', onListFocusOut);
       }
     });
 
     onUnmounted(() => {
-      if (keywordInput.value) {
+      if (keywordInput.value && keywordInput.value instanceof HTMLDivElement) {
         keywordInput.value.removeEventListener('focusin', onInputFocusIn);
         keywordInput.value.removeEventListener('focusout', onInputFocusOut);
       }
-      if (keywordList.value) {
+      if (keywordList.value && keywordList.value.$el instanceof HTMLDivElement) {
         keywordList.value.$el.removeEventListener('focusin', onListFocusIn);
         keywordList.value.$el.removeEventListener('focusout', onListFocusOut);
       }
@@ -204,14 +208,10 @@ export default {
       formValue,
       formStructure,
       keywordReset,
-      keywordRemoveAll,
-      keywordClick,
-      keywordRemove,
-      toggleSaveMode,
       onSubmit,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
