@@ -16,15 +16,21 @@
   </div>
 </template>
 
-<script>
-import { ref, watch, computed, onMounted, useStore } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { ref, watch, computed, onMounted, useStore, defineComponent, Ref } from '@nuxtjs/composition-api';
 
-import SearchForm from '@/components/SearchForm';
-import SearchResult from '@/components/SearchResult';
-import SearchResultCard from '@/components/SearchResultCard';
+import SearchForm from '@/components/SearchForm.vue';
+import SearchResult from '@/components/SearchResult.vue';
+import SearchResultCard from '@/components/SearchResultCard.vue';
 import SearchPagination from '@/components/SearchPagination.vue';
 
-export default {
+import CustomError from '@/api/customError';
+import { CustomErrorProto } from '@/api/customErrorTypes';
+
+import { Category, Status, SearchFormData, SearchListData } from '@/types/view';
+import { ListItem } from '@/api/maskTypes';
+
+export default defineComponent({
   name: 'Index',
   components: {
     SearchForm,
@@ -38,13 +44,13 @@ export default {
 
     const isLoading = ref(false);
 
-    const formData = ref({
-      category: '',
+    const formData: Ref<SearchFormData> = ref({
+      category: 'product' as Category,
       keyword: '',
     });
 
-    const resultData = ref({
-      status: 'reset',
+    const resultData: Ref<SearchListData> = ref({
+      status: 'reset' as Status,
       currentPage: 1,
       totalPage: 0,
       list: [],
@@ -63,12 +69,15 @@ export default {
     };
 
     const updateFormData = () => {
-      formData.value.category = $route.value.query.company ? 'company' : 'product';
-      formData.value.keyword = $route.value.query[formData.value.category];
+      const category = ($route.value.query.company ? 'company' : 'product') as Category;
+      const keyword = $route.value.query[formData.value.category] as string;
+      formData.value.category = category;
+      formData.value.keyword = keyword;
     };
 
     const updateResultData = async () => {
-      resultData.value.currentPage = parseInt($route.value.query.page) || 1;
+      const page = $route.value.query.page as string;
+      resultData.value.currentPage = parseInt(page) || 1;
       resultData.value.list = [];
 
       const params = {
@@ -82,71 +91,54 @@ export default {
       try {
         // negative
         if (resultData.value.currentPage <= 0) {
-          throw { name: 'negative' };
+          throw new context.root.$customError('negative');
         }
         // emptyBody
         if (!response.data.body || Object.keys(response.data.body).length === 0) {
-          throw { name: 'emptyBody' };
+          throw new context.root.$customError('emptyBody');
         }
         // totalPageOver
-        const totalPage = Math.ceil(response.data.body.totalCount / 10);
+        const totalPage = Math.ceil(response.data.body.totalCount / 10) || 1;
         if (totalPage !== 0 && resultData.value.currentPage > totalPage) {
-          throw { name: 'totalPageOver', totalPage };
+          throw new context.root.$customError('totalPageOver', { totalPage });
         }
         // naturel data
         isLoading.value = false;
         resultData.value.status = 'update';
         resultData.value.totalPage = totalPage;
         if (response.data.body.hasOwnProperty('items') && response.data.body.items.length) {
-          resultData.value.list.push(...response.data.body.items);
+          const items: ListItem[] = [...response.data.body.items];
+          resultData.value.list = items;
         }
-      } catch (error) {
-        if (error.name === 'negative') {
-          context.root.$router.push({
-            path: '/search',
-            query: {
-              page: 1,
-              [formData.value.category]: formData.value.keyword,
-            },
-          });
+      } catch (error: unknown) {
+        if (error instanceof CustomError && error.label === 'negative') {
+          onUpdatePage(1);
           return;
-        } else if (error.name === 'emptyBody') {
+        } else if (error instanceof CustomError && error.label === 'emptyBody') {
           isLoading.value = false;
           resultData.value.status = 'error';
-        } else if (error.name === 'totalPageOver') {
-          context.root.$router.push({
-            path: '/search',
-            query: {
-              page: error.totalPage || 1,
-              [formData.value.category]: formData.value.keyword,
-            },
-          });
+        } else if (error instanceof CustomError && error.label === 'totalPageOver') {
+          onUpdatePage(error.extra.totalPage);
           return;
-        } else {
+        } else if (error instanceof Error) {
           console.log(error);
           isLoading.value = false;
           resultData.value.status = 'error';
+          return;
         }
       }
     };
 
     const onFormSubmit = () => {
       if (isLoading.value === true) return false;
-
-      context.root.$router.push({
-        path: '/search',
-        query: {
-          page: 1,
-          [formData.value.category]: formData.value.keyword,
-        },
-      });
+      onUpdatePage(1);
     };
 
-    const onUpdatePage = (num) => {
+    const onUpdatePage = (num: number) => {
       context.root.$router.push({
         path: '/search',
         query: {
-          page: num,
+          page: num.toString(),
           [formData.value.category]: formData.value.keyword,
         },
       });
@@ -193,5 +185,5 @@ export default {
       onUpdatePage,
     };
   },
-};
+});
 </script>
