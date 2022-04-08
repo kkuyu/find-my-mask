@@ -18,10 +18,17 @@
   </div>
 </template>
 
-<script>
-import { computed } from '@vue/composition-api';
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api';
+import { computed, ComputedRef } from '@vue/composition-api';
 
-export default {
+type ItemNums = number[];
+type ItemBtns = {
+  isVisible: boolean;
+  num: number;
+};
+
+export default defineComponent({
   name: 'SearchPagination',
   props: {
     resultData: {
@@ -36,29 +43,31 @@ export default {
     },
   },
   setup(props, context) {
-    const itemNums = computed(() => {
+    const itemNums: ComputedRef<ItemNums> = computed(() => {
       const row = Math.floor((props.resultData.currentPage - 1) / 5);
-      const result = [...Array(5).keys()].reduce((acc, cur) => {
+      const result = [...Array(5).keys()].reduce((acc: number[], cur: number) => {
         const num = 5 * row + cur + 1;
         if (num <= props.resultData.totalPage) acc.push(num);
         return acc;
       }, []);
-      return result;
+      return result.toString() === [1].toString() ? [] : result;
     });
-    const itemPrev = computed(() => {
+
+    const itemPrev: ComputedRef<ItemBtns> = computed(() => {
       const firstNum = itemNums.value[0];
       const prevNum = firstNum - 1 || 0;
       if (prevNum === 0) return { isVisible: false, num: prevNum };
       return { isVisible: true, num: prevNum };
     });
-    const itemNext = computed(() => {
+
+    const itemNext: ComputedRef<ItemBtns> = computed(() => {
       const lastNum = itemNums.value[itemNums.value.length - 1];
       const nextNum = lastNum + 1 || 0;
       if (nextNum > props.resultData.totalPage || nextNum === 0) return { isVisible: false, num: nextNum };
       return { isVisible: true, num: nextNum };
     });
 
-    const updatePage = (num) => {
+    const updatePage = (num: number): void => {
       context.emit('updatePage', num);
     };
 
@@ -69,7 +78,7 @@ export default {
       updatePage,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
