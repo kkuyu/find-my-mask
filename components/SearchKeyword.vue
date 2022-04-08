@@ -32,38 +32,39 @@
   </div>
 </template>
 
-<script>
-import { ref, computed, useStore } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { computed, useStore, defineComponent, ComputedRef } from '@nuxtjs/composition-api';
 
-export default {
+import { MaskState, MaskStore } from '@/store/types';
+import { KeywordType, SearchState } from '@/store/search/state';
+
+export default defineComponent({
   name: 'SearchKeyword',
   setup(props, context) {
-    const store = useStore();
-    const $router = context.root.$router;
+    const store: MaskStore = useStore();
 
-    const keywordList = computed(() => {
-      return store.getters['search/RECENTLY_LIST_REVERSE'];
-    });
+    const keywordList: ComputedRef<() => (state: SearchState) => KeywordType[]> = computed(() => store.getters['search/RECENTLY_LIST_REVERSE']);
 
-    const keywordClick = ($event, keyword) => {
-      $router.push({
+    const keywordClick = ($event: MouseEvent, keyword: KeywordType): void => {
+      const num = 1;
+      context.root.$router.push({
         path: '/search',
         query: {
-          page: 1,
+          page: num.toString(),
           [keyword.category]: keyword.text,
         },
       });
     };
 
-    const keywordRemove = ($event, keyword) => {
+    const keywordRemove = ($event: MouseEvent, keyword: KeywordType): void => {
       store.dispatch('search/REMOVE_KEYWORD', keyword);
     };
 
-    const keywordRemoveAll = ($event) => {
+    const keywordRemoveAll = ($event: MouseEvent): void => {
       store.dispatch('search/REMOVE_RECENTLY_LIST');
     };
 
-    const toggleSaveMode = ($event) => {
+    const toggleSaveMode = ($event: MouseEvent): void => {
       store.dispatch('search/CHANGE_SAVE_MODE', !store.state.search.isSaveMode);
     };
 
@@ -75,7 +76,7 @@ export default {
       toggleSaveMode,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
