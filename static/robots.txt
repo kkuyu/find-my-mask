@@ -1,2 +1,4 @@
 User-agent: *
-Disallow: /not-support.html
+Allow:/
+Disallow:/not-support.html
+Sitemap:https://find-my-mask.com/sitemap.xml
