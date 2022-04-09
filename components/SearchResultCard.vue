@@ -19,10 +19,10 @@
   </div>
 </template>
 
-<script>
-import { computed } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { computed, ComputedRef, defineComponent } from '@nuxtjs/composition-api';
 
-export default {
+export default defineComponent({
   name: 'SearchResultCard',
   props: {
     data: {
@@ -42,20 +42,18 @@ export default {
     },
   },
   setup(props, context) {
-    const query = computed(() => context.root.$route.query);
-    const isCompany = computed(() => query.value.hasOwnProperty('company'));
-    const isProduct = computed(() => query.value.hasOwnProperty('product'));
+    const badgeItem: string[] = ['class', 'grade'];
 
-    const badgeItem = ['class', 'grade'];
+    const isCompany: ComputedRef<boolean> = computed(() => context.root.$route.query.hasOwnProperty('company'));
+    const isProduct: ComputedRef<boolean> = computed(() => context.root.$route.query.hasOwnProperty('product'));
 
     return {
-      query,
+      badgeItem,
       isCompany,
       isProduct,
-      badgeItem,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
