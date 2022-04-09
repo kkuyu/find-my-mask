@@ -25,7 +25,7 @@ export default defineComponent({
       return false;
     });
 
-    const historyBack: () => void = () => {
+    const historyBack = (): void => {
       if (window.history.length > 1) {
         context.root.$router.back();
       } else {

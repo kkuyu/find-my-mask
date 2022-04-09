@@ -69,10 +69,8 @@ export default defineComponent({
     };
 
     const updateFormData = () => {
-      const category = ($route.value.query.company ? 'company' : 'product') as Category;
-      const keyword = $route.value.query[formData.value.category] as string;
-      formData.value.category = category;
-      formData.value.keyword = keyword;
+      formData.value.category = ($route.value.query.company ? 'company' : 'product') as Category;
+      formData.value.keyword = $route.value.query[formData.value.category] as string;
     };
 
     const updateResultData = async () => {

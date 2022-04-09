@@ -19,8 +19,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api';
+import { defineComponent, PropType } from '@nuxtjs/composition-api';
 import { computed, ComputedRef } from '@vue/composition-api';
+import { SearchListData } from '@/types/view';
 
 type ItemNums = number[];
 type ItemBtns = {
@@ -32,7 +33,7 @@ export default defineComponent({
   name: 'SearchPagination',
   props: {
     resultData: {
-      type: Object,
+      type: Object as PropType<SearchListData>,
       required: true,
       default: () => ({
         status: 'reset',

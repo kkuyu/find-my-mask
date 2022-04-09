@@ -82,8 +82,11 @@ export default defineComponent({
           resultData.value.status = 'empty';
         }
       } catch (error) {
-        console.log(error);
-        resultData.value.status = 'error';
+        if (error instanceof Error) {
+          console.log(error);
+          resultData.value.status = 'error';
+          return;
+        }
       }
     };
 
