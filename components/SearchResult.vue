@@ -19,8 +19,11 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from '@nuxtjs/composition-api';
+import { SearchListData } from '@/types/view';
+
+export default defineComponent({
   name: 'SearchResult',
   props: {
     isLoading: {
@@ -29,7 +32,7 @@ export default {
       default: false,
     },
     resultData: {
-      type: Object,
+      type: Object as PropType<SearchListData>,
       required: true,
       default: () => ({
         status: 'reset',
@@ -39,7 +42,7 @@ export default {
       }),
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
